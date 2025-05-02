@@ -59,7 +59,7 @@ async function insertUser(user){
     let qResult;
     try{
         // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
-        let query = 'insert into users (name,username,password,age) VALUES values (?,?,?,?)';
+        let query = 'insert into users (name,username,password,age) VALUES (?,?,?,?)';
         let params = [user.name, user.username,user.password, user.age]
         qResult = await dataSource.insertData(query,params);
     }catch(err){

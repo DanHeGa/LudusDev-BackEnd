@@ -41,4 +41,4 @@ async function homePage(req,res){
 }
 
 
-module.exports = {index,homePage,other,lang};
+module.exports = {index,homePage};
