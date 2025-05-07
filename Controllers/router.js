@@ -24,11 +24,11 @@ router.get(constants.contextURL, templates.homePage);
 
 
 /* API routes */
-
-router.get(constants.contextURL + constants.apiURL + "/getUsers", usersRest.getUsers);
-router.post(constants.contextURL + constants.apiURL + "/findUser", usersRest.findUser);
-router.post(constants.contextURL + constants.apiURL + "/insertUser", usersRest.insertUser);
-router.put(constants.contextURL + constants.apiURL + "/updateUser", usersRest.updateUser); 
-router.delete(constants.contextURL + constants.apiURL + "/deleteUser", usersRest.deleteUser);
+router.post(constants.contextURL + constants.apiURL + "/login", usersRest.execLogin);
+router.get(constants.contextURL + constants.apiURL + "/getUsers",usersRest.authenticateToken, usersRest.getUsers);
+router.post(constants.contextURL + constants.apiURL + "/findUser",usersRest.authenticateToken, usersRest.findUser);
+router.post(constants.contextURL + constants.apiURL + "/insertUser",usersRest.authenticateToken, usersRest.insertUser);
+router.put(constants.contextURL + constants.apiURL + "/updateUser",usersRest.authenticateToken, usersRest.updateUser); 
+router.delete(constants.contextURL + constants.apiURL + "/deleteUser",usersRest.authenticateToken, usersRest.deleteUser);
 
 module.exports = router;

@@ -12,6 +12,7 @@
  * 
  */
 const dataSource = require('../Datasource/MySQLMngr');
+const hashService = require('./hashPassword');
 
 /**
  * Method that returns the list of users. NOTE that the method returns also the passwords of the users.
@@ -22,7 +23,7 @@ const dataSource = require('../Datasource/MySQLMngr');
 async function getUsers(){
     let qResult;
     try{
-        let query = 'SELECT * FROM users';
+        let query = 'SELECT name,username,age FROM users';
         qResult = await dataSource.getData(query);   
     }catch(err){
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);
@@ -41,7 +42,7 @@ async function findUser(username){
     let qResult;
     try{
         // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
-        let query = 'select * from users where username = ?';
+        let query = 'select name,username,age from users where username = ?';
         let params = [username]
         qResult = await dataSource.getDataWithParams(query,params);
     }catch(err){
@@ -59,8 +60,9 @@ async function insertUser(user){
     let qResult;
     try{
         // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
-        let query = 'insert into users (name,username,password,age) VALUES (?,?,?,?)';
-        let params = [user.name, user.username,user.password, user.age]
+        let query = 'insert into users (name,username,password,age,hash_password) VALUES (?,?,?,?,?)';
+        user.hash_password = await hashService.encryptPassword(user.password);
+        let params = [user.name, user.username,user.password, user.age,user.hash_password]
         qResult = await dataSource.insertData(query,params);
     }catch(err){
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);
@@ -78,8 +80,9 @@ async function updateUser(user){
     let qResult;
     try{
         // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
-        let query = 'update users set name = ?,username = ?,password = ?,age = ? where id = ?';
-        let params = [user.name, user.username,user.password, user.age, user.id]
+        let query = 'update users set name = ?,username = ?,password = ?,age = ?, hash_password = ? where id = ?';
+        user.hash_password = await hashService.encryptPassword(user.password);
+        let params = [user.name, user.username,user.password, user.age, user.hash_password, user.id]
         qResult = await dataSource.updateData(query,params);
     }catch(err){
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);

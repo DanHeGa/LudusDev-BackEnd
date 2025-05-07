@@ -9,6 +9,51 @@
  * On this way, tables can be managed independently and the code is more readable.
  */
 const userService = require('../../Service/usersService');
+const hashService = require('../../Service/hashPassword');
+const jwt = require('jsonwebtoken');
+
+const SECRET = 'hahi9elakeddao1chhh1shh48';
+
+/**
+ * HTTP Method that handles authentication
+ */
+async function execLogin(req, res) {
+    const { username, password } = req.body;
+    const user = hashService.isValidUser(username,password)
+  
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+  
+    //CREATES the token
+    const token = jwt.sign(
+      { id: user.id, username: user.username },
+      SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.json({ token }); // client stores this token
+}
+
+/**
+ * Middleware that will execute before each protected URL
+ * @param {*} req the original request
+ * @param {*} res the users response
+ * @param {*} next the method that will be executed next to this
+ * @returns in case of unauthorized access
+ */
+async function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization']; // Bearer <token>
+    const token = authHeader && authHeader.split(' ')[1];
+  
+    if (!token) return res.sendStatus(401); // Unauthorized
+  
+    jwt.verify(token, SECRET, (err, user) => {
+      if (err) return res.sendStatus(403); // Forbidden
+      req.user = user;
+      next();
+    });
+}
 
 
 /**
@@ -147,5 +192,5 @@ async function deleteUser(req,res){
 }
 
 module.exports = {
-    getUsers,findUser,insertUser,updateUser,deleteUser
+    execLogin,authenticateToken,getUsers,findUser,insertUser,updateUser,deleteUser
 }
