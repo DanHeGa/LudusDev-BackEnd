@@ -78,7 +78,7 @@ function createServer(){
 function initWebProject(){
     const server = createServer();
     server.listen(constants.port, () => {
-        console.log(`OSF Scenario Manager service running on port ${constants.port}`);
+        console.log(`CSoftware API running on port ${constants.port}`);
     });
 }
 
