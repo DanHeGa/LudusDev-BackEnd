@@ -11,8 +11,9 @@
 const userService = require('../../Service/usersService');
 const hashService = require('../../Service/hashPassword');
 const jwt = require('jsonwebtoken');
+require('dotenv').config()
 
-const SECRET = 'hahi9elakeddao1chhh1shh48';
+const SECRET = process.env.SECRET;
 
 /**
  * HTTP Method that handles authentication
