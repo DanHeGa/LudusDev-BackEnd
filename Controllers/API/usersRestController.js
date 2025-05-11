@@ -20,7 +20,7 @@ const SECRET = process.env.SECRET;
  */
 async function execLogin(req, res) {
     const { username, password } = req.body;
-    const user = hashService.isValidUser(username,password)
+    const user = await hashService.isValidUser(username,password)
   
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });

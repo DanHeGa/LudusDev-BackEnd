@@ -12,6 +12,7 @@
 const express = require('express');
 const templates = require('./Templates/templates');
 const usersRest = require('./API/usersRestController');
+const imageRest = require('./API/imageRestController');
 const constants = require("../constants");
 
 const router = express.Router();
@@ -30,5 +31,8 @@ router.post(constants.contextURL + constants.apiURL + "/findUser",usersRest.auth
 router.post(constants.contextURL + constants.apiURL + "/insertUser",usersRest.authenticateToken, usersRest.insertUser);
 router.put(constants.contextURL + constants.apiURL + "/updateUser",usersRest.authenticateToken, usersRest.updateUser); 
 router.delete(constants.contextURL + constants.apiURL + "/deleteUser",usersRest.authenticateToken, usersRest.deleteUser);
+
+router.post(constants.contextURL + constants.apiURL + "/imageUpload",usersRest.authenticateToken, imageRest.upload.single("image"), imageRest.processUpload);
+
 
 module.exports = router;
