@@ -45,7 +45,7 @@ async function execLogin(req, res) {
  */
 async function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']; // Bearer <token>
-    const token = authHeader && authHeader.split(' ')[1];
+    const token = authHeader && authHeader.split(' ')[1]; //takes the token from the aithHeader turned into a list
   
     if (!token) return res.sendStatus(401); // Unauthorized
   

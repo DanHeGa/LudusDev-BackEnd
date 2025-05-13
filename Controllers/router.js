@@ -25,6 +25,7 @@ router.get(constants.contextURL, templates.homePage);
 
 
 /* API routes */
+/*Using authenticateToken acts as a middleware for accesing each URL before actaully getting to them*/
 router.post(constants.contextURL + constants.apiURL + "/login", usersRest.execLogin);
 router.get(constants.contextURL + constants.apiURL + "/getUsers",usersRest.authenticateToken, usersRest.getUsers);
 router.post(constants.contextURL + constants.apiURL + "/findUser",usersRest.authenticateToken, usersRest.findUser);
@@ -32,7 +33,7 @@ router.post(constants.contextURL + constants.apiURL + "/insertUser",usersRest.au
 router.put(constants.contextURL + constants.apiURL + "/updateUser",usersRest.authenticateToken, usersRest.updateUser); 
 router.delete(constants.contextURL + constants.apiURL + "/deleteUser",usersRest.authenticateToken, usersRest.deleteUser);
 
-router.post(constants.contextURL + constants.apiURL + "/imageUpload",usersRest.authenticateToken, imageRest.upload.single("image"), imageRest.processUpload);
+router.post(constants.contextURL + constants.apiURL + "/imageUpload",usersRest.authenticateToken, imageRest.upload.single("image"), imageRest.processUpload); //upload.single uploads the image to the disk, the processUpload takes the image and does the request from that function
 
 
 module.exports = router;

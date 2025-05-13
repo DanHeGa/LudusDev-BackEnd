@@ -1,5 +1,10 @@
 const dataSource = require('../Datasource/MySQLMngr');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt'); 
+
+/*
+dependencies for encryption are 
+jsonwebtoken, bcrypt and cookie-parser
+*/
 
 /**
  * This method hashes a given password

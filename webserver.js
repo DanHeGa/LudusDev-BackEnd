@@ -13,7 +13,7 @@
 const constants = require("./constants")
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');;
+const cors = require('cors');
 //const session = require('express-session');
 const router = require("./Controllers/router");
 
@@ -22,6 +22,8 @@ const router = require("./Controllers/router");
  * Session configuration function.
  * @param {Object} app
  */
+
+//this is for express session of im not wrong
 function configureSecurity(app){
     // app.use (session({
     //     secret: 'hahi9elakeddao1chhh1shh48',
@@ -61,7 +63,7 @@ function createServer(){
     const app = express();
     configureServer(app);
     configStaticFilesAndVies(app);
-    configureSecurity(app);
+    //configureSecurity(app);
     const server = require('http').createServer(app); // Create the server using the express app and potentially other middleware
     return server;
 }
