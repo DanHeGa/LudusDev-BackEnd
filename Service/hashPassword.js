@@ -16,7 +16,7 @@ async function encryptPassword(pass){
     return password;
 }
 
-/**
+/** 
  * this method determines whether the user has given correct credentials.
  * RECAL that is more secure to use bcrypt.compare to determine if both passwords are the same.
  * 
