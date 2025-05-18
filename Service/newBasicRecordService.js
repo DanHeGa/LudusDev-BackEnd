@@ -1,5 +1,4 @@
 const dataSource = require('../Datasource/MySQLMngr');
-const IdGetter = require('./conversionService');
 const constants = require('../constants');
 /**
  * Function to add a new Registro into table 'registro'
