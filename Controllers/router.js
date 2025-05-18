@@ -21,6 +21,6 @@ const router = express.Router();
 
 //API ACTIVITY ROUTES, no need of authentication in this part (for now).
 router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.newCamaraTrampa);
-router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.insertUser);
+router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.insertRecord);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const basic = require('../../Service/newBasicRecordService');
 
-async function insertUser(req,res){
+async function insertRecord(req,res){
     try{       
         let record = req.body;
         const result = await basic.newRecord(record);
@@ -21,4 +21,4 @@ async function insertUser(req,res){
     }
 }
 
-module.exports = {insertUser};
+module.exports = {insertRecord};

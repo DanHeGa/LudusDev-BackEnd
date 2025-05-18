@@ -14,7 +14,7 @@ const estadoTiempo = {
 
 const estacion = {
     '1': 'verano_seco',
-    '2': 'invierno_lluvioso'
+    '2': 'invierno_lluviosa'
 }
 
 const tiporegistro = {

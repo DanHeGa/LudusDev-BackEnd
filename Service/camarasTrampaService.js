@@ -21,14 +21,13 @@ async function insertCamaraTramp(newCamara){
     try {
         console.log("LLego a insetCamara")
         basicRegistry = await basicRecord.newRecord(newCamara); //use await because it's a query to the DB, QUITA EL IDCAMARA CUANDO LUCIO ARREGLE ESO
-        let query = 'INSERT INTO camara_trampa(ID_camara, ID_registro, codigo, zona, nombre_camara, placa_camara, placaGuaya, anchoCaminoMt, fechaInstalacion, distanciaObjetivoMt, alturaLenteMt, listaChequeo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        let query = 'INSERT INTO camara_trampa(ID_registro, codigo, zona, nombre_camara, placa_camara, placaGuaya, anchoCaminoMt, fechaInstalacion, distanciaObjetivoMt, alturaLenteMt, listaChequeo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         let id_registry = basicRegistry.unico;
         let id_zone = getKeyByValue(constants.zona, newCamara.zona);
         let id_camara = 1;
-        //const fechaInstalacion = new Date(newCamara.body.fechaInstalacion).toISOString().split('T')[0];
-        //const listaChequeo = JSON.stringify(newCamara.body.listaChequeo)
+        const fechaInstalacion = new Date(newCamara.fechaInstalacion).toISOString().split('T')[0];
+        const listaChequeo = JSON.stringify(newCamara.listaChequeo)
         let values = [
-            id_camara,
             id_registry,
             newCamara.codigo,
             id_zone,
@@ -36,10 +35,10 @@ async function insertCamaraTramp(newCamara){
             newCamara.placaCamara,
             newCamara.placaGuaya,
             newCamara.anchoCaminoMt,
-            newCamara.fechaInstalacion,
+            fechaInstalacion,
             newCamara.distanciaObjetivoMt,
             newCamara.alturaLenteMt,
-            newCamara.listaChequeo
+            listaChequeo
         ];
         console.log("about to make a camaratramp");
         qResult = await dataSource.insertData(query, values);
