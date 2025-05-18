@@ -14,6 +14,9 @@ const templates = require('./Templates/templates');
 const usersRest = require('./API/usersRestController');
 const imageRest = require('./API/imageRestController');
 const constants = require("../constants");
+// "Parcela de Vegetación"
+const vegetacionRest = require('./API/vegetacionRestControllers');
+
 
 const router = express.Router();
 
@@ -32,6 +35,10 @@ router.post(constants.contextURL + constants.apiURL + "/findUser",usersRest.auth
 router.post(constants.contextURL + constants.apiURL + "/insertUser",usersRest.authenticateToken, usersRest.insertUser);
 router.put(constants.contextURL + constants.apiURL + "/updateUser",usersRest.authenticateToken, usersRest.updateUser); 
 router.delete(constants.contextURL + constants.apiURL + "/deleteUser",usersRest.authenticateToken, usersRest.deleteUser);
+
+// "Parcela de Vegetación"
+router.post(constants.contextURL + constants.apiURL + "/insertVegetacion",vegetacionRest.insertVegetacion);
+
 
 router.post(constants.contextURL + constants.apiURL + "/imageUpload",usersRest.authenticateToken, imageRest.upload.single("image"), imageRest.processUpload); //upload.single uploads the image to the disk, the processUpload takes the image and does the request from that function
 
