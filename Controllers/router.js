@@ -15,26 +15,13 @@ const usersRest = require('./API/usersRestController');
 const imageRest = require('./API/imageRestController');
 const constants = require("../constants");
 
+//API ACTIVITY CONTROLLERS 
+const camaraTramp = require('./API/camaraTrampaControllers');
+
 const router = express.Router();
 
-/*TEMPLATES routes */
-router.get(constants.indexURL, templates.index);
-router.get(constants.contextURL, templates.homePage);
-// router.get(constants.contextURL+'/login', templates.getLogin);
-// router.get(constants.contextURL+'/logout', templates.logout);
 
-
-/* API routes */
-/*Using authenticateToken acts as a middleware for accesing each URL before actaully getting to them*/
-router.post(constants.contextURL + constants.apiURL + "/login", usersRest.execLogin);
-router.get(constants.contextURL + constants.apiURL + "/getUsers",usersRest.authenticateToken, usersRest.getUsers);
-router.post(constants.contextURL + constants.apiURL + "/findUser",usersRest.authenticateToken, usersRest.findUser);
-router.post(constants.contextURL + constants.apiURL + "/insertUser",usersRest.authenticateToken, usersRest.insertUser);
-router.put(constants.contextURL + constants.apiURL + "/updateUser",usersRest.authenticateToken, usersRest.updateUser); 
-router.delete(constants.contextURL + constants.apiURL + "/deleteUser",usersRest.authenticateToken, usersRest.deleteUser);
-
-//to test in api client u use form-data, put image in the table and specify it to be a file for it to be taken from ur computer
-router.post(constants.contextURL + constants.apiURL + "/imageUpload",usersRest.authenticateToken, imageRest.upload.single("image"), imageRest.processUpload); //upload.single uploads the image to the disk, the processUpload takes the image and does the request from that function
-
+//API ACTIVITY ROUTES, no need of authentication in this part (for now).
+router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.newCamaraTrampa);
 
 module.exports = router;

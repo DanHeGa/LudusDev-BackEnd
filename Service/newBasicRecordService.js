@@ -1,5 +1,5 @@
 const dataSource = require('../Datasource/MySQLMngr');
-const IdGetter = require('./conversionService').IDresolver;
+const IdGetter = require('./conversionService');
 /**
  * Function to add a new Registro into table 'registro'
  * @returns reqJson, id_Registro. req is the JSON given by the professors simulator
@@ -10,17 +10,21 @@ const IdGetter = require('./conversionService').IDresolver;
 
 async function newRecord(reqJson) {
     let qResult;
-    try {
-        let query = 'INSERT INTO registro(ID_estadoTiempo, ID_estacion, ID_tipoRegistro) VALUES (?, ?, ?)';
-        estado_Tiempo = IdGetter('ID_estadoTiempo', 'estadotiempo', 'nombreEstadoTiempo', toString(reqJson.estadoTiempo)); //check if it actually uses the estadoTiempo from the originla query or if its better to put it in a nother varible.
-        estacion_ = IdGetter('ID_estacion', 'estacion', 'nombreEstacion', toString(reqJson.estacion));
-        tipo_Registro = IdGetter('ID_tipoRegistro', 'tiporegistro', 'nombreTipoRegistro', toString(reqJson.tipoRegistro));
-        let params = [estado_Tiempo, estacion_, tipo_Registro];
+    try { //wait for our DATA engineer to have the id_registro being auto_increment for it to be unique
+        //DESPUES QUITA IDREGISTRO DE QUERY, DE LA VARIABLE Y DE LOS PARAMS!!!
+        let query = 'INSERT INTO registro(ID_registro, ID_estadoTiempo, ID_estacion, ID_tipoRegistro) VALUES (?, ?, ?, ?)';
+        estado_Tiempo = await IdGetter.IDresolver('ID_estadoTiempo', 'estadotiempo', 'nombreEstadoTiempo', toString(reqJson.estadoTiempo)); //check if it actually uses the estadoTiempo from the originla query or if its better to put it in a nother varible.
+        estacion_ = await IdGetter.IDresolver('ID_estacion', 'estacion', 'nombreEstacion', toString(reqJson.estacion));
+        tipo_Registro = await IdGetter.IDresolver('ID_tipoRegistro', 'tiporegistro', 'nombreTipoRegistro', toString(reqJson.tipoRegistro));
+        unico = 101;
+        console.log("about to insert new basic record");
+        let params = [unico, estado_Tiempo, estacion_, tipo_Registro];
         qResult = await dataSource.insertData(query, params);
-        return { reqJson, id_Registro: qResult.getGenId() };
+        console.log("Inserted new basic record");
+        return { id_Registro: qResult.getGenId() };
     } catch (err) {
-        qResult = new dataSource.QueryResult(false,[],0,0,err.message);
-        return;
+        console.error("Error en newRecord:", err);
+        throw err; 
     }
 } 
 
