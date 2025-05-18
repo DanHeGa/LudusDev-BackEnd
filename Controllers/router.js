@@ -33,6 +33,7 @@ router.post(constants.contextURL + constants.apiURL + "/insertUser",usersRest.au
 router.put(constants.contextURL + constants.apiURL + "/updateUser",usersRest.authenticateToken, usersRest.updateUser); 
 router.delete(constants.contextURL + constants.apiURL + "/deleteUser",usersRest.authenticateToken, usersRest.deleteUser);
 
+//to test in api client u use form-data, put image in the table and specify it to be a file for it to be taken from ur computer
 router.post(constants.contextURL + constants.apiURL + "/imageUpload",usersRest.authenticateToken, imageRest.upload.single("image"), imageRest.processUpload); //upload.single uploads the image to the disk, the processUpload takes the image and does the request from that function
 
 
