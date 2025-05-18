@@ -15,12 +15,14 @@ const basico = require('../Controllers/API/basicRecordController');
 const constants = require("../constants");
 const vegetacionRest = require('./API/vegetacionRestControllers');
 const camaraTramp = require('./API/camaraTrampaControllers');
+const usersRest = require('./API/usersRestController'); 
+
 
 const router = express.Router();
 
 /* TEMPLATES routes */
-router.get(constants.indexURL, templates.index);
-router.get(constants.contextURL, templates.homePage);
+//router.get(constants.indexURL, templates.index);
+//router.get(constants.contextURL, templates.homePage);
 // router.get(constants.contextURL+'/login', templates.getLogin);
 // router.get(constants.contextURL+'/logout', templates.logout);
 
@@ -34,7 +36,16 @@ router.put(constants.contextURL + constants.apiURL + "/updateUser", usersRest.au
 router.delete(constants.contextURL + constants.apiURL + "/deleteUser", usersRest.authenticateToken, usersRest.deleteUser);
 
 // ANGELA: "Parcela de Vegetación"
-router.post(constants.contextURL + constants.apiURL + "/insertVegetacion", vegetacionRest.insertVegetacion);
+router.post("/api/vegetacion/insertVegetacion", vegetacionRest.insertVegetacion);
+router.get("/api/vegetacion/ping", (req, res) => {
+  res.send("Ruta viva");
+});
+router.post("/api/vegetacion/insertVegetacion", (req, res) => {
+  console.log("🌿 POST a insertVegetacion recibido");
+  res.json({ status: "ok", msg: "ruta insertVegetacion funciona" });
+});
+
+
 
 // DANY: API ACTIVITY ROUTES, no need of authentication in this part (for now).
 router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.newCamaraTrampa);

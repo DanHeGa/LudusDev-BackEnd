@@ -1,7 +1,6 @@
 // const { param } = require('../Controllers/router');
 const dataSource = require('../Datasource/MySQLMngr');
 const basicRecord = require('../Service/newBasicRecordService');
-const IdGetter = require('../Service/conversionService');
 const constants = require('../constants');
 
 /**

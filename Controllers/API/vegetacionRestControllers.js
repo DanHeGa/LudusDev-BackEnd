@@ -6,7 +6,7 @@
  * improving code organization and maintainability.
  */
 
-const vegetacionService = require('../API/vegetacionService');
+const vegetacionService = require('../../Service/vegetacionService'); 
 
 /**
  * Method that inserts vegetation data into the database.
@@ -15,6 +15,7 @@ const vegetacionService = require('../API/vegetacionService');
  * @param {Object} res - The response object.
  */
 async function insertVegetacion(req, res) {
+    console.log("✅ Entró al insertVegetacion");
     try {
         const data = req.body;
 
@@ -27,12 +28,14 @@ async function insertVegetacion(req, res) {
         }
 
         const result = await vegetacionService.insertVegetacion(data);
+        
 
         if (result.success) {
             res.status(200).json({
                 status: "success",
                 inserted: result.changes,
                 last_id: result.gen_id || result.lastID // compatible with your datasource
+                
             });
         } else {
             res.status(500).json({
