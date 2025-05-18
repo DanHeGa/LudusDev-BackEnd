@@ -81,7 +81,6 @@ function initWebProject(){
     const server = createServer();
     server.listen(constants.port, () => {
         console.log(`CSoftware API running on port ${constants.port}`);
-        console.log(`http://localhost/${constants.port}`);
     });
 }
 

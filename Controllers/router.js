@@ -10,9 +10,8 @@
  * Ernesto Cantú
  */
 const express = require('express');
-const templates = require('./Templates/templates');
-const usersRest = require('./API/usersRestController');
 const imageRest = require('./API/imageRestController');
+const basico = require('../Controllers/API/basicRecordController')
 const constants = require("../constants");
 
 //API ACTIVITY CONTROLLERS 
@@ -20,8 +19,8 @@ const camaraTramp = require('./API/camaraTrampaControllers');
 
 const router = express.Router();
 
-
 //API ACTIVITY ROUTES, no need of authentication in this part (for now).
 router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.newCamaraTrampa);
+router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.insertUser);
 
 module.exports = router;
