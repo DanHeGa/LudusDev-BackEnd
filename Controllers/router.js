@@ -25,7 +25,7 @@ const router = express.Router();
 router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.newCamaraTrampa);
 router.post(constants.contextURL + constants.apiURL + "/newVegetacion", vegetacion.insertVegetacion); // ← ngela: Parcela Vegetación RUTA
 router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.insertRecord);
-router.post(constants.contextURL + constants.apiURL + "/insertFaunaTransecto", faunaTransecto.insertFaunaTransecto); // Lucio: Fauna Transecto RUTA
+router.post(constants.contextURL + constants.apiURL + "/newFaunaTransecto", faunaTransecto.insertFaunaTransecto); // Lucio: Fauna Transecto RUTA
 
 
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
