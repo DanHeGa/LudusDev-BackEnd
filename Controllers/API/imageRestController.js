@@ -10,7 +10,7 @@ const newEvidences = require('../../Service/evidenciasService');
  */
 async function processUpload(req, res){
     try{       
-        console.log(req.evidencias); // Contains image file info
+        //console.log(req.evidencias); // Contains image file info
         const request = req.body;
         let result = await newEvidences.newEvidenceService(request);
         if(result.getStatus()){
@@ -37,4 +37,4 @@ async function processUpload(req, res){
     }
 }
 
-module.exports = {upload,processUpload}
+module.exports = {processUpload}

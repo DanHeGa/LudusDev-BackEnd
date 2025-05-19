@@ -14,7 +14,7 @@ async function uploadedImageLog(image){
         let query = "INSERT INTO imagenes (nombre) VALUES (?)";
         let params = [image.name];
         qResult = await dataSource.insertData(query,params);
-        console.log("Uploaded img successfully");
+        console.log(`"Uploaded img successfully ${image.name}`);
         return { qResult, image_id: qResult.getGenId() };
     }catch(err){
         console.log("upload img error");

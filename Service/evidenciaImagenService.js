@@ -7,7 +7,7 @@ const dataSource = require('../Datasource/MySQLMngr');
 async function evidencia_imageServ(id_evidence, id_img){
     let qResult;
     try{
-        let query = "INSERT INTO evidencia_imagen VALUES (?, ?)";
+        let query = "INSERT INTO evidencia_imagen(ID_evidencia, ID_imagenes) VALUES (?, ?)";
         let params = [id_evidence, id_img];
         console.log("about to make a new relation");
         qResult = await dataSource.insertData(query, params);

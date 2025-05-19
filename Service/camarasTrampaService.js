@@ -2,6 +2,7 @@
 const dataSource = require('../Datasource/MySQLMngr');
 const basicRecord = require('../Service/newBasicRecordService');
 const constants = require('../constants');
+const evidences = require('../Service/evidenciasService');
 
 /**
  * Method that gets the list of camara_trampa registries
@@ -17,6 +18,7 @@ function getKeyByValue(object, value) {
 
 async function insertCamaraTramp(newCamara){
     let qResult;
+    let evidencias;
     try {
         console.log("LLego a insetCamara")
         basicRegistry = await basicRecord.newRecord(newCamara); //use await because it's a query to the DB, QUITA EL IDCAMARA CUANDO LUCIO ARREGLE ESO
@@ -41,7 +43,9 @@ async function insertCamaraTramp(newCamara){
         ];
         console.log("about to make a camaratramp");
         qResult = await dataSource.insertData(query, values);
-        console.log("got new camara tramp");    
+        console.log("got new camara tramp");  
+        evidencias = evidences.newEvidenceService(id_registry, newCamara);
+        console.log("Inserted new evidences from Camara Trampa");  
     } catch (error) {
         console.error("Error en newCamara:", error);
         throw error; 
