@@ -37,4 +37,4 @@ async function processUpload(req, res){
     }
 }
 
-module.exports = {upload,processUpload}
+module.exports = {processUpload}

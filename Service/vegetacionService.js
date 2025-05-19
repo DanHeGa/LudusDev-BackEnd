@@ -1,39 +1,36 @@
-/**
- * Vegetacion service.
- * Contains all the required logic to manage vegetation data on the APP.
- * 
- * Good reasons to separate the service from the controller:
- * 1. The service can be reused in multiple controllers, jobs or utilities.
- * 2. The service focuses only on data logic, keeping concerns separated.
- * 3. Improves testability and maintainability.
- */
-
 const dataSource = require('../Datasource/MySQLMngr');
+const basicRecord = require('../Service/newBasicRecordService');
+const constants = require('../constants');
 
-/**
- * Method that inserts vegetation data into the parcela_vegetacion table.
- * 
- * @param {Object} data - JSON object containing vegetation information.
- * @returns {QueryResult} - Result object containing query execution status.
- */
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
+
 async function insertVegetacion(data) {
     let qResult;
     try {
+        console.log("🌱 Insertando registro básico para vegetación...");
+        const basicRegistry = await basicRecord.newRecord(data);
+        const idRegistro = basicRegistry.unico;
+
+        const idCuadrante = getKeyByValue(constants.cuadrante, data.cuadrante);
+        const idSubCuadrante = getKeyByValue(constants.subcuadrante, data.subcuadrante);
+        const idHabito = getKeyByValue(constants.habito_crecimiento, data.habito_crecimiento);
+
         const query = `
             INSERT INTO parcela_vegetacion (
-                ID_parcela, ID_registro, codigo, ID_cuadrante, ID_subCuadrante,
-                ID_habito_crecimiento, nombreComun, nombreCientifico, placa,
-                circunferenciaCm, distanciaMt, estaturaBiomonitorMt, alturaMt
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                ID_registro, codigo, ID_cuadrante, ID_subCuadrante, ID_habito_crecimiento,
+                nombreComun, nombreCientifico, placa, circunferenciaCm,
+                distanciaMt, estaturaBiomonitorMt, alturaMt
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `;
 
-        const params = [
-            data.ID_parcela,
-            data.ID_registro,
+        const values = [
+            idRegistro,
             data.codigo,
-            data.ID_cuadrante,
-            data.ID_subCuadrante,
-            data.ID_habito_crecimiento,
+            idCuadrante,
+            idSubCuadrante,
+            idHabito,
             data.nombreComun,
             data.nombreCientifico,
             data.placa,
@@ -43,14 +40,15 @@ async function insertVegetacion(data) {
             data.alturaMt
         ];
 
-        qResult = await dataSource.insertData(query, params);
-    } catch (err) {
-        qResult = new dataSource.QueryResult(false, [], 0, 0, err.message);
+        console.log("🌳 Insertando datos en parcela_vegetacion...");
+        qResult = await dataSource.insertData(query, values);
+        console.log("✅ Inserción completada.");
+    } catch (error) {
+        console.error("❌ Error en insertVegetacion:", error);
+        throw error;
     }
 
     return qResult;
 }
 
-module.exports = {
-    insertVegetacion
-};
+module.exports = { insertVegetacion };
