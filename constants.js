@@ -50,6 +50,30 @@ const tipoObservacion = {
     '5': 'le_dijeron',
 }
 
+const cuadrante = {
+    '1': 'A',
+    '2': 'B',
+    '3': 'C',
+    '4': 'D',
+    '5': 'E',
+    '6': 'F',
+    '7': 'G'
+};
+
+const subcuadrante = {
+    '1': '1',
+    '2': '2',
+    '3': '3',
+    '4': '4'
+};
+
+const habito_crecimiento = {
+    '1': 'arbusto_<1mt',
+    '2': 'media_1-3mt',
+    '3': 'arbol_>3mt'
+};
+
+
 module.exports= {
     port,
     indexURL,
@@ -60,5 +84,8 @@ module.exports= {
     tiporegistro,
     zona,
     tipoAnimal,
-    tipoObservacion
+    tipoObservacion,
+    cuadrante,
+    subcuadrante,
+    habito_crecimiento
 }
