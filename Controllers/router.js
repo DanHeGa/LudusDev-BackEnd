@@ -16,7 +16,7 @@ const constants = require("../constants");
 //API ACTIVITY CONTROLLERS 
 const camaraTramp = require('./API/camaraTrampaControllers');
 const vegetacion = require('./API/vegetacionRestControllers'); // ← Angela: Parcela Vegetación
-
+const validacionCobertura = require('./API/validacionCoberturaController');// ← Regina: Validación Cobertura  
 
 const router = express.Router();
 
@@ -24,7 +24,7 @@ const router = express.Router();
 router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.newCamaraTrampa);
 router.post(constants.contextURL + constants.apiURL + "/newVegetacion", vegetacion.insertVegetacion); // ← ngela: Parcela Vegetación RUTA
 router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.insertRecord);
-
+router.post(constants.contextURL + constants.apiURL + "/newValidacionCobertura", validacionCobertura.newValidacionCobertura);// ← Regina: Validación Cobertura RUTA
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
 
 module.exports = router;
