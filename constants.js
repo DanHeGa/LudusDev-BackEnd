@@ -34,6 +34,21 @@ const zona = {
     '4': 'cultivos_permanentes'
 }
 
+const tipoAnimal = {
+    '1': 'mamifero',
+    '2': 'ave',
+    '3': 'reptil',
+    '4': 'anfibio',
+    '5': 'insecto'
+}
+
+const tipoObservacion = {
+    '1': 'la_vio',
+    '2': 'huella',
+    '3': 'rastro',
+    '4': 'caceria',
+    '5': 'le_dijeron',
+}
 
 module.exports= {
     port,
@@ -43,5 +58,7 @@ module.exports= {
     estadoTiempo,
     estacion,
     tiporegistro,
-    zona
+    zona,
+    tipoAnimal,
+    tipoObservacion
 }
