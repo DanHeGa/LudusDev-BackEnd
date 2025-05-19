@@ -1,6 +1,8 @@
 const dataSource = require('../Datasource/MySQLMngr');
 const constants = require('../constants');
 const { newRecord } = require('./newBasicRecordService');
+const evidences = require('../Service/evidenciasService');
+
 
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
@@ -39,6 +41,12 @@ async function addFaunaPuntoConteo(reqJson) {
         ];
 
         const qResult = await dataSource.insertData(query, params);
+
+        if (reqJson.observaciones || (Array.isArray(reqJson.images) && reqJson.images.length > 0)) {
+            await evidences.newEvidenceService(unico, reqJson);
+            console.log("Evidencias registradas para fauna_punto_conteo.");
+        }
+
         return { id_fauna_punto_conteo: qResult.getGenId(), ID_registro: unico };
 
     } catch (error) {
@@ -46,5 +54,6 @@ async function addFaunaPuntoConteo(reqJson) {
         throw error;
     }
 }
+
 
 module.exports = { addFaunaPuntoConteo };
