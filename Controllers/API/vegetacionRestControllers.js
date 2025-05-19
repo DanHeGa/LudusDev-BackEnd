@@ -1,51 +1,35 @@
-/**
- * Vegetacion REST controller.
- * 
- * Handles HTTP requests related to vegetation data.
- * This controller separates the request logic from the service logic,
- * improving code organization and maintainability.
- */
-
-const vegetacionService = require('../../Service/vegetacionService'); 
+// Importa el servicio de vegetación que contiene la lógica principal
+const vegetacionService = require('../../Service/vegetacionService');
 
 /**
- * Method that inserts vegetation data into the database.
+ * Controller que recibe el JSON desde la APP para insertar un nuevo registro de vegetación.
  * 
- * @param {Object} req - The request object (expects data in req.body).
- * @param {Object} res - The response object.
+ * ASYNC permite ejecutar funciones que usan await, necesarias para operaciones asincrónicas con la BD.
+ * AWAIT se usa para esperar la respuesta completa del servicio llamado antes de continuar,
+ * lo que garantiza consistencia en el flujo de datos.
+ * 
+ * @param {*} req - Objeto de solicitud con el JSON desde la APP.
+ * @param {*} res - Objeto de respuesta HTTP que se envía al cliente.
  */
 async function insertVegetacion(req, res) {
-    console.log("✅ Entró al insertVegetacion");
     try {
-        const data = req.body;
+        const newVegetacion = req.body;
 
-        // Optional: Validate that required fields exist before calling the service
-        if (!data.ID_parcela || !data.codigo || !data.nombreComun) {
-            return res.status(400).json({
-                status: "error",
-                message: "Missing required fields"
-            });
-        }
+        console.log("🌿 Recibido nuevo registro de vegetación:", newVegetacion);
 
-        const result = await vegetacionService.insertVegetacion(data);
-        
+        const resultado = await vegetacionService.insertVegetacion(newVegetacion);
 
-        if (result.success) {
-            res.status(200).json({
-                status: "success",
-                inserted: result.changes,
-                last_id: result.gen_id || result.lastID // compatible with your datasource
-                
-            });
-        } else {
-            res.status(500).json({
-                status: "error",
-                message: result.message || "Unknown error"
-            });
-        }
+        res.status(200).json({
+            status: "success",
+            total: resultado.changes,
+            gen_id: resultado.gen_id || resultado.lastID // Compatibilidad con distintos gestores de BD
+        });
+
+        console.log("✅ Registro de vegetación insertado correctamente");
 
     } catch (error) {
-        console.error("Insert Vegetacion Error:", error);
+        console.error("❌ Error al insertar vegetación:", error);
+
         res.status(500).json({
             status: "error",
             message: error.message
@@ -53,6 +37,4 @@ async function insertVegetacion(req, res) {
     }
 }
 
-module.exports = {
-    insertVegetacion
-};
+module.exports = { insertVegetacion };

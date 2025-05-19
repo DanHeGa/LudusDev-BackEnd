@@ -1,56 +1,64 @@
-/**
- * Vegetacion service.
- * Contains all the required logic to manage vegetation data on the APP.
- * 
- * Good reasons to separate the service from the controller:
- * 1. The service can be reused in multiple controllers, jobs or utilities.
- * 2. The service focuses only on data logic, keeping concerns separated.
- * 3. Improves testability and maintainability.
- */
-
 const dataSource = require('../Datasource/MySQLMngr');
+const basicRecord = require('../Service/newBasicRecordService');
+const constants = require('../constants');
 
 /**
- * Method that inserts vegetation data into the parcela_vegetacion table.
- * 
- * @param {Object} data - JSON object containing vegetation information.
- * @returns {QueryResult} - Result object containing query execution status.
+ * Utilidad para encontrar la clave de un valor en un catálogo.
  */
-async function insertVegetacion(data) {
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
+
+/**
+ * Inserta un nuevo registro en la tabla parcela_vegetacion.
+ * Genera primero un registro básico usando newBasicRecordService.
+ * 
+ * @param {Object} vegetacionInfo - JSON con todos los datos de vegetación.
+ * @returns {Object} Resultado de la inserción.
+ */
+async function insertVegetacion(vegetacionInfo) {
     let qResult;
     try {
+        console.log("🌱 Insertando registro básico para vegetación...");
+        const basicRegistry = await basicRecord.newRecord(vegetacionInfo);
+        const idRegistro = basicRegistry.unico;
+
+        const idCuadrante = getKeyByValue(constants.cuadrante, vegetacionInfo.cuadrante);
+        const idSubCuadrante = getKeyByValue(constants.subCuadrante, vegetacionInfo.subCuadrante);
+        const idHabito = getKeyByValue(constants.habitoCrecimiento, vegetacionInfo.habitoCrecimiento);
+
         const query = `
             INSERT INTO parcela_vegetacion (
-                ID_parcela, ID_registro, codigo, ID_cuadrante, ID_subCuadrante,
-                ID_habito_crecimiento, nombreComun, nombreCientifico, placa,
-                circunferenciaCm, distanciaMt, estaturaBiomonitorMt, alturaMt
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                ID_registro, codigo, ID_cuadrante, ID_subCuadrante, ID_habito_crecimiento,
+                nombreComun, nombreCientifico, placa, circunferenciaCm,
+                distanciaMt, estaturaBiomonitorMt, alturaMt
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `;
 
-        const params = [
-            data.ID_parcela,
-            data.ID_registro,
-            data.codigo,
-            data.ID_cuadrante,
-            data.ID_subCuadrante,
-            data.ID_habito_crecimiento,
-            data.nombreComun,
-            data.nombreCientifico,
-            data.placa,
-            data.circunferenciaCm,
-            data.distanciaMt,
-            data.estaturaBiomonitorMt,
-            data.alturaMt
+        const values = [
+            idRegistro,
+            vegetacionInfo.codigo,
+            idCuadrante,
+            idSubCuadrante,
+            idHabito,
+            vegetacionInfo.nombreComun,
+            vegetacionInfo.nombreCientifico,
+            vegetacionInfo.placa || null,
+            vegetacionInfo.circunferenciaCm,
+            vegetacionInfo.distanciaMt,
+            vegetacionInfo.estaturaBiomonitorMt,
+            vegetacionInfo.alturaMt
         ];
 
-        qResult = await dataSource.insertData(query, params);
-    } catch (err) {
-        qResult = new dataSource.QueryResult(false, [], 0, 0, err.message);
+        console.log("🌳 Insertando datos en parcela_vegetacion...");
+        qResult = await dataSource.insertData(query, values);
+        console.log("✅ Inserción completada.");
+    } catch (error) {
+        console.error("❌ Error en insertVegetacion:", error);
+        throw error;
     }
 
     return qResult;
 }
 
-module.exports = {
-    insertVegetacion
-};
+module.exports = { insertVegetacion };
