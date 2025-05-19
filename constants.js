@@ -73,6 +73,12 @@ const habitoCrecimiento = {
     '3': 'arbol_>3mt'
 };
 
+const alturaObservacion = {
+    '1': 'baja_<1mt',
+    '2': 'media_1-3mt',
+    '3': 'alta_>3mt'
+};
+
 
 module.exports= {
     port,
@@ -87,5 +93,6 @@ module.exports= {
     tipoObservacion,
     cuadrante,
     subCuadrante,
-    habitoCrecimiento
+    habitoCrecimiento,
+    alturaObservacion
 }

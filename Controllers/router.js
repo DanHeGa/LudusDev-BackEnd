@@ -17,6 +17,8 @@ const constants = require("../constants");
 const camaraTramp = require('./API/camaraTrampaControllers');
 const vegetacion = require('./API/vegetacionRestControllers'); // ← Angela: Parcela Vegetación
 const faunaTransecto = require('./API/faunaTransectoController'); // Lucio
+const faunaPuntoConteo = require('./API/faunaPuntoConteoController'); // Lucio: Fauna Punto Conteo
+
 
 
 const router = express.Router();
@@ -26,6 +28,8 @@ router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.
 router.post(constants.contextURL + constants.apiURL + "/newVegetacion", vegetacion.insertVegetacion); // ← ngela: Parcela Vegetación RUTA
 router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.insertRecord);
 router.post(constants.contextURL + constants.apiURL + "/newFaunaTransecto", faunaTransecto.insertFaunaTransecto); // Lucio: Fauna Transecto RUTA
+router.post(constants.contextURL + constants.apiURL + "/newFaunaPuntoConteo", faunaPuntoConteo.postFaunaPuntoConteo); // Lucio: Fauna Punto Conteo RUTA
+
 
 
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
