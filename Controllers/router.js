@@ -16,6 +16,8 @@ const constants = require("../constants");
 //API ACTIVITY CONTROLLERS 
 const camaraTramp = require('./API/camaraTrampaControllers');
 const vegetacion = require('./API/vegetacionRestControllers'); // ← Angela: Parcela Vegetación
+const faunaTransecto = require('./API/faunaTransectoController'); // Lucio
+const faunaPuntoConteo = require('./API/faunaPuntoConteoController'); // Lucio: Fauna Punto Conteo
 const validacionCobertura = require('./API/validacionCoberturaController');// ← Regina: Validación Cobertura  
 
 const router = express.Router();
