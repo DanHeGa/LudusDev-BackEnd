@@ -1,6 +1,7 @@
 const dataSource = require('../Datasource/MySQLMngr');
 const basicRecord = require('../Service/newBasicRecordService');
 const constants = require('../constants');
+const evidences = require('../Service/evidenciasService');
 
 /**
  * Utilidad para encontrar la clave de un valor en un catálogo.
@@ -53,6 +54,8 @@ async function insertVegetacion(vegetacionInfo) {
         console.log("🌳 Insertando datos en parcela_vegetacion...");
         qResult = await dataSource.insertData(query, values);
         console.log("✅ Inserción completada.");
+        evidencias = evidences.newEvidenceService(id_registry, newCamara);
+        console.log("Inserted new evidences from Parcela de Vegetacion");
     } catch (error) {
         console.error("❌ Error en insertVegetacion:", error);
         throw error;
