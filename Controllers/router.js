@@ -16,6 +16,7 @@ const constants = require("../constants");
 //API ACTIVITY CONTROLLERS 
 const camaraTramp = require('./API/camaraTrampaControllers');
 const vegetacion = require('./API/vegetacionRestControllers'); // ← Angela: Parcela Vegetación
+const varClim = require('./API/varClimRestControllers'); // ← Angela: Variables Climáticas
 const faunaTransecto = require('./API/faunaTransectoController'); // Lucio
 const faunaPuntoConteo = require('./API/faunaPuntoConteoController'); // Lucio: Fauna Punto Conteo
 const validacionCobertura = require('./API/validacionCoberturaController');// ← Regina: Validación Cobertura  
@@ -25,6 +26,7 @@ const router = express.Router();
 //API ACTIVITY ROUTES, no need of authentication in this part (for now).
 router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.newCamaraTrampa);
 router.post(constants.contextURL + constants.apiURL + "/newVegetacion", vegetacion.insertVegetacion); // ← Angela: Parcela Vegetación RUTA
+router.post(constants.contextURL + constants.apiURL + "/newVariablesClimaticas", varClim.insertVariablesClimaticas); // ← Angela: Variables Climáticas RUTA
 router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.insertRecord);
 router.post(constants.contextURL + constants.apiURL + "/newValidacionCobertura", validacionCobertura.newValidacionCobertura);// ← Regina: Validación Cobertura RUTA
 router.post(constants.contextURL + constants.apiURL + "/newFaunaTransecto", faunaTransecto.insertFaunaTransecto); // Lucio: Fauna Transecto RUTA
