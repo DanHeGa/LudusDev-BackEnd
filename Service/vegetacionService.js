@@ -2,20 +2,30 @@ const dataSource = require('../Datasource/MySQLMngr');
 const basicRecord = require('../Service/newBasicRecordService');
 const constants = require('../constants');
 
+/**
+ * Utilidad para encontrar la clave de un valor en un catálogo.
+ */
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
 
-async function insertVegetacion(data) {
+/**
+ * Inserta un nuevo registro en la tabla parcela_vegetacion.
+ * Genera primero un registro básico usando newBasicRecordService.
+ * 
+ * @param {Object} vegetacionInfo - JSON con todos los datos de vegetación.
+ * @returns {Object} Resultado de la inserción.
+ */
+async function insertVegetacion(vegetacionInfo) {
     let qResult;
     try {
         console.log("🌱 Insertando registro básico para vegetación...");
-        const basicRegistry = await basicRecord.newRecord(data);
+        const basicRegistry = await basicRecord.newRecord(vegetacionInfo);
         const idRegistro = basicRegistry.unico;
 
-        const idCuadrante = getKeyByValue(constants.cuadrante, data.cuadrante);
-        const idSubCuadrante = getKeyByValue(constants.subcuadrante, data.subcuadrante);
-        const idHabito = getKeyByValue(constants.habito_crecimiento, data.habito_crecimiento);
+        const idCuadrante = getKeyByValue(constants.cuadrante, vegetacionInfo.cuadrante);
+        const idSubCuadrante = getKeyByValue(constants.subCuadrante, vegetacionInfo.subCuadrante);
+        const idHabito = getKeyByValue(constants.habitoCrecimiento, vegetacionInfo.habitoCrecimiento);
 
         const query = `
             INSERT INTO parcela_vegetacion (
@@ -27,17 +37,17 @@ async function insertVegetacion(data) {
 
         const values = [
             idRegistro,
-            data.codigo,
+            vegetacionInfo.codigo,
             idCuadrante,
             idSubCuadrante,
             idHabito,
-            data.nombreComun,
-            data.nombreCientifico,
-            data.placa,
-            data.circunferenciaCm,
-            data.distanciaMt,
-            data.estaturaBiomonitorMt,
-            data.alturaMt
+            vegetacionInfo.nombreComun,
+            vegetacionInfo.nombreCientifico,
+            vegetacionInfo.placa || null,
+            vegetacionInfo.circunferenciaCm,
+            vegetacionInfo.distanciaMt,
+            vegetacionInfo.estaturaBiomonitorMt,
+            vegetacionInfo.alturaMt
         ];
 
         console.log("🌳 Insertando datos en parcela_vegetacion...");

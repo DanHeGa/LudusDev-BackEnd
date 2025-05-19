@@ -22,9 +22,14 @@ const router = express.Router();
 
 //API ACTIVITY ROUTES, no need of authentication in this part (for now).
 router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.newCamaraTrampa);
-router.post(constants.contextURL + constants.apiURL + "/newVegetacion", vegetacion.insertVegetacion); // ← ngela: Parcela Vegetación RUTA
+router.post(constants.contextURL + constants.apiURL + "/newVegetacion", vegetacion.insertVegetacion); // ← Angela: Parcela Vegetación RUTA
 router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.insertRecord);
 router.post(constants.contextURL + constants.apiURL + "/newValidacionCobertura", validacionCobertura.newValidacionCobertura);// ← Regina: Validación Cobertura RUTA
+router.post(constants.contextURL + constants.apiURL + "/newFaunaTransecto", faunaTransecto.insertFaunaTransecto); // Lucio: Fauna Transecto RUTA
+router.post(constants.contextURL + constants.apiURL + "/newFaunaPuntoConteo", faunaPuntoConteo.postFaunaPuntoConteo); // Lucio: Fauna Punto Conteo RUTA
+
+
+
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
 
 module.exports = router;

@@ -60,17 +60,23 @@ const cuadrante = {
     '7': 'G'
 };
 
-const subcuadrante = {
+const subCuadrante = {
     '1': '1',
     '2': '2',
     '3': '3',
     '4': '4'
 };
 
-const habito_crecimiento = {
+const habitoCrecimiento = {
     '1': 'arbusto_<1mt',
-    '2': 'media_1-3mt',
+    '2': 'arbolito_1-3mt',
     '3': 'arbol_>3mt'
+};
+
+const alturaObservacion = {
+    '1': 'baja_<1mt',
+    '2': 'media_1-3mt',
+    '3': 'alta_>3mt'
 };
 
 
@@ -86,6 +92,7 @@ module.exports= {
     tipoAnimal,
     tipoObservacion,
     cuadrante,
-    subcuadrante,
-    habito_crecimiento
+    subCuadrante,
+    habitoCrecimiento,
+    alturaObservacion
 }
