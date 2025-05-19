@@ -14,8 +14,10 @@ async function insertVegetacion(data) {
         const idRegistro = basicRegistry.unico;
 
         const idCuadrante = getKeyByValue(constants.cuadrante, data.cuadrante);
-        const idSubCuadrante = getKeyByValue(constants.subcuadrante, data.subcuadrante);
-        const idHabito = getKeyByValue(constants.habito_crecimiento, data.habito_crecimiento);
+        const idSubCuadrante = getKeyByValue(constants.subcuadrante, data.subCuadrante);
+        const idHabito = getKeyByValue(constants.habito_crecimiento, data.habitoCrecimiento);
+
+
 
         const query = `
             INSERT INTO parcela_vegetacion (
