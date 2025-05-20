@@ -1,7 +1,6 @@
 const port = 3000;
 
-//URLS 
-
+// URLs
 const indexURL = '/';
 const contextURL = '/CSoftware';
 const apiURL = '/api';
@@ -10,12 +9,12 @@ const estadoTiempo = {
     '1': 'soleado',
     '2': 'parcialmente_nublado',
     '3': 'lluvioso'
-}
+};
 
 const estacion = {
     '1': 'verano_seco',
     '2': 'invierno_lluviosa'
-}
+};
 
 const tiporegistro = {
     '1': 'fauna_transecto',
@@ -25,14 +24,14 @@ const tiporegistro = {
     '5': 'parcela_vegetacion',
     '6': 'camaras_trampa',
     '7': 'variables_climaticas'
-}
+};
 
 const zona = {
     '1': 'bosque',
     '2': 'arreglo_agroforestal',
     '3': 'cultivos_transitorios',
     '4': 'cultivos_permanentes'
-}
+};
 
 const tipoAnimal = {
     '1': 'mamifero',
@@ -40,15 +39,15 @@ const tipoAnimal = {
     '3': 'reptil',
     '4': 'anfibio',
     '5': 'insecto'
-}
+};
 
 const tipoObservacion = {
     '1': 'la_vio',
     '2': 'huella',
     '3': 'rastro',
     '4': 'caceria',
-    '5': 'le_dijeron',
-}
+    '5': 'le_dijeron'
+};
 
 const cuadrante = {
     '1': 'A',
@@ -79,8 +78,31 @@ const alturaObservacion = {
     '3': 'alta_>3mt'
 };
 
+const cobertura = {
+    '1': 'BD',
+    '2': 'RA',
+    '3': 'RB',
+    '4': 'PA',
+    '5': 'PL',
+    '6': 'CP',
+    '7': 'CT',
+    '8': 'VH',
+    '9': 'TD',
+    '10': 'IF'
+};
 
-module.exports= {
+const disturbio = {
+    '1': 'inundacion',
+    '2': 'quema',
+    '3': 'tala',
+    '4': 'erupcion',
+    '5': 'mineria',
+    '6': 'carretera',
+    '7': 'mas_plantas_acuaticas',
+    '8': 'otro'
+};
+
+module.exports = {
     port,
     indexURL,
     contextURL,
@@ -94,5 +116,7 @@ module.exports= {
     cuadrante,
     subCuadrante,
     habitoCrecimiento,
-    alturaObservacion
-}
+    alturaObservacion,
+    cobertura,
+    disturbio
+};
