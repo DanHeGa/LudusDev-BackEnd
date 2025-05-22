@@ -17,7 +17,6 @@ const cors = require('cors');
 //const session = require('express-session');
 const router = require("./Controllers/router");
 
-
 /**
  * Session configuration function.
  * @param {Object} app
@@ -51,8 +50,8 @@ function configStaticFilesAndVies(app){
  */
 function configureServer(app){
     app.use(cors());
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json({ limit: '50mb' }));
+    app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 }
 
 /**

@@ -49,4 +49,4 @@ async function addFaunaPuntoConteo(reqJson) {
     }
 }
 
-module.exports = { insertFaunaTransecto };
+//module.exports = { insertFaunaTransecto };
