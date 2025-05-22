@@ -1,7 +1,6 @@
 const dataSource = require('../Datasource/MySQLMngr');
 const basicRecord = require('../Service/newBasicRecordService');
 const constants = require('../constants');
-//const evidencesIMG = require('../Service/evidenciaImagenService');
 const evidences = require('../Service/evidenciasService');
 
 /**
@@ -55,7 +54,7 @@ async function insertVegetacion(vegetacionInfo) {
         console.log("🌳 Insertando datos en parcela_vegetacion...");
         qResult = await dataSource.insertData(query, values);
         console.log("✅ Inserción completada.");
-        
+
         if (vegetacionInfo.observaciones || (vegetacionInfo.evidencias && vegetacionInfo.evidencias.length > 0)) {
             await evidences.newEvidenceService(idRegistro, vegetacionInfo);
             console.log("📎 Evidencias guardadas en tabla 'evidencias'");

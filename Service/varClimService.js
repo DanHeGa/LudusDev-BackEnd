@@ -1,8 +1,7 @@
 const dataSource = require('../Datasource/MySQLMngr');
 const basicRecord = require('../Service/newBasicRecordService');
 const constants = require('../constants');
-//const evidencesIMG = require('../Service/evidenciaImagenService');
-//const evidences = require('../Service/evidenciasService');
+const evidences = require('../Service/evidenciasService');
 
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
@@ -37,8 +36,12 @@ async function insertVariablesClimaticas(climaInfo) {
         console.log("🌧️ Insertando datos en variables_climaticas...");
         qResult = await dataSource.insertData(query, values);
         console.log("✅ Inserción completada.");
-        //evidencias = evidences.newEvidenceService(id_registry, newCamara);
-        //console.log("Inserted new evidences from Variables Climaticas");
+        
+        if (climaInfo.observaciones || (climaInfo.evidencias && climaInfo.evidencias.length > 0)) {
+                    await evidences.newEvidenceService(idRegistro, climaInfo);
+                    console.log("📎 Evidencias guardadas en tabla 'evidencias' de Variables Climaticas");
+                }
+
     } catch (error) {
         console.error("❌ Error en insertVariablesClimaticas:", error);
         throw error;
