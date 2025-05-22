@@ -44,8 +44,9 @@ async function newEvidenceService( id_registry, jsonReq ){
         evidence_id = qResult.getGenId()
         
         //inserting each provided image to images table
-        images = jsonReq.images;
-        for(let i = 0; i < images.length; i++) {
+        const images = Array.isArray(jsonReq.images) ? jsonReq.images : [];
+        for (let i = 0; i < images.length; i++) {
+
             const img = images[i];
             // Extraer el tipo y los datos base64
             const matches = img.base64.match(/^data:(.+);base64,(.+)$/);

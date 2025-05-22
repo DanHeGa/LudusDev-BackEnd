@@ -1,7 +1,8 @@
 const dataSource = require('../Datasource/MySQLMngr');
 const basicRecord = require('../Service/newBasicRecordService');
 const constants = require('../constants');
-//const evidences = require('../Service/evidenciasService');
+//const evidencesIMG = require('../Service/evidenciaImagenService');
+const evidences = require('../Service/evidenciasService');
 
 /**
  * Utilidad para encontrar la clave de un valor en un catálogo.
@@ -54,7 +55,11 @@ async function insertVegetacion(vegetacionInfo) {
         console.log("🌳 Insertando datos en parcela_vegetacion...");
         qResult = await dataSource.insertData(query, values);
         console.log("✅ Inserción completada.");
-        //evidencias = evidences.newEvidenceService(id_registry, newCamara);
+        
+        if (vegetacionInfo.observaciones || (vegetacionInfo.evidencias && vegetacionInfo.evidencias.length > 0)) {
+            await evidences.newEvidenceService(idRegistro, vegetacionInfo);
+            console.log("📎 Evidencias guardadas en tabla 'evidencias'");
+        }
         //console.log("Inserted new evidences from Parcela de Vegetacion");
     } catch (error) {
         console.error("❌ Error en insertVegetacion:", error);
