@@ -23,7 +23,7 @@ const hashService = require('./hashPassword');
 async function getUsers(){
     let qResult;
     try{
-        let query = 'SELECT name,username,age FROM users';
+        let query = 'SELECT ID_usuario, username, email, fechaRegistro, statusUsuario FROM usuario';
         qResult = await dataSource.getData(query);   
     }catch(err){
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);
@@ -42,7 +42,7 @@ async function findUser(username){
     let qResult;
     try{
         // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
-        let query = 'select name,username,age from users where username = ?';
+        let query = 'SELECT ID_usuario, username, email, statusUsuario FROM usuario WHERE username = ?';
         let params = [username]
         qResult = await dataSource.getDataWithParams(query,params);
     }catch(err){
@@ -58,19 +58,40 @@ async function findUser(username){
  */
 async function insertUser(user){
     let qResult;
-    try{
-        // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
-        let query = 'insert into users (name,username,password,age,hash_password) VALUES (?,?,?,?,?)';
-        //first u hash the given password and then u can insert the new user with the actually hashed password
-        user.hash_password = await hashService.encryptPassword(user.password);
-        let params = [user.name, user.username,user.password, user.age,user.hash_password]
-        qResult = await dataSource.insertData(query,params);
-    }catch(err){
-        qResult = new dataSource.QueryResult(false,[],0,0,err.message);
+    try {
+        const query = `
+            INSERT INTO usuario (username, contrasenaHashed, email, fechaRegistro, statusUsuario)
+            VALUES (?, ?, ?, ?, ?)
+        `;
+        const fecha = new Date();
+        const hash = await hashService.encryptPassword(user.password);
+        const params = [
+            user.username,
+            hash,
+            user.email,
+            fecha,
+            user.statusUsuario
+        ];
+
+        console.log("QUERY:", query);
+        console.log("PARAMS:", params);
+
+        qResult = await dataSource.insertData(query, params);
+
+        // Verifica si fue exitoso
+        console.log("RESULTADO DE INSERCIÓN:", qResult);
+
+    } catch (err) {
+        console.error("ERROR EN insertUser:", err);
+        if (err instanceof dataSource.QueryResult) {
+            qResult = err;
+        } else {
+            qResult = new dataSource.QueryResult(false, [], 0, 0, err?.message || String(err));
+        }
     }
+
     return qResult;
 }
-
 
 /**
  * Method that updates a user into the database.
@@ -81,9 +102,13 @@ async function updateUser(user){
     let qResult;
     try{
         // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
-        let query = 'update users set name = ?,username = ?,password = ?,age = ?, hash_password = ? where id = ?';
-        user.hash_password = await hashService.encryptPassword(user.password);
-        let params = [user.name, user.username,user.password, user.age, user.hash_password, user.id]
+        let query = `
+            UPDATE usuario 
+            SET username = ?, contrasenaHashed = ?, email = ?, statusUsuario = ?
+            WHERE ID_usuario = ?
+        `;
+        const hash = await hashService.encryptPassword(user.password);
+        let params = [user.username, hash, user.email, user.statusUsuario, user.ID_usuario];
         qResult = await dataSource.updateData(query,params);
     }catch(err){
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);
@@ -92,23 +117,22 @@ async function updateUser(user){
 }
 
 /**
- * Method that updates a user into the database.
- * @param {*} user 
+ * Method that deletes a user from the database.
+ * @param {*} user_id 
  * @returns 
  */
 async function deleteUser(user_id){
     let qResult;
     try{
         // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
-        let query = 'delete from users where id = ?';
-        let params = [user_id]
+        let query = 'DELETE FROM usuario WHERE ID_usuario = ?';
+        let params = [user_id];
         qResult = await dataSource.updateData(query,params);
     }catch(err){
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);
     }
     return qResult;
 }
-
 
 module.exports = {
     getUsers,

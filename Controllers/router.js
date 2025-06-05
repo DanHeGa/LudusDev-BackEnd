@@ -20,6 +20,9 @@ const varClim = require('./API/varClimRestControllers'); // ← Angela: Variable
 //const faunaTransecto = require('./API/faunaTransectoController'); // Lucio
 const faunaPuntoConteo = require('./API/faunaPuntoConteoController'); // Lucio: Fauna Punto Conteo
 const validacionCobertura = require('./API/validacionCoberturaController');// ← Regina: Validación Cobertura  
+// LOGIN User Controller
+const userController = require('./API/usersRestController'); // ajusta la ruta si es necesario
+
 
 const router = express.Router();
 
@@ -31,6 +34,9 @@ router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.inser
 router.post(constants.contextURL + constants.apiURL + "/newValidacionCobertura", validacionCobertura.newValidacionCobertura);// ← Regina: Validación Cobertura RUTA
 //router.post(constants.contextURL + constants.apiURL + "/newFaunaTransecto", faunaTransecto.insertFaunaTransecto); // Lucio: Fauna Transecto RUTA
 router.post(constants.contextURL + constants.apiURL + "/newFaunaPuntoConteo", faunaPuntoConteo.postFaunaPuntoConteo); // Lucio: Fauna Punto Conteo RUTA
+// LOGIN User Routes
+router.post(constants.contextURL + constants.apiURL + "/newUser", userController.insertUser);
+router.get(constants.contextURL + constants.apiURL + "/getUsers", userController.getUsers);
 
 
 
