@@ -192,6 +192,29 @@ async function deleteUser(req,res){
     }
 }
 
+/**
+ * Nuevo endpoint de login usando email y password.
+ */
+async function loginWithEmail(req, res) {
+    const { email, password } = req.body;
+
+    const user = await userService.validateUserByEmail(email, password);
+
+    if (!user) {
+        return res.status(401).json({ isLogin: false, message: 'Correo o contraseña incorrectos' });
+    }
+
+    res.json({
+        isLogin: true,
+        user: {
+            id: user.ID_usuario,
+            email: user.email,
+            username: user.username
+        }
+    });
+}
+
+
 module.exports = {
-    execLogin,authenticateToken,getUsers,findUser,insertUser,updateUser,deleteUser
+    execLogin,authenticateToken,getUsers,findUser,insertUser,updateUser,deleteUser, loginWithEmail
 }

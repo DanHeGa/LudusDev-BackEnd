@@ -37,6 +37,7 @@ router.post(constants.contextURL + constants.apiURL + "/newFaunaPuntoConteo", fa
 // LOGIN User Routes
 router.post(constants.contextURL + constants.apiURL + "/newUser", userController.insertUser);
 router.get(constants.contextURL + constants.apiURL + "/getUsers", userController.getUsers);
+router.post(constants.contextURL + constants.apiURL + '/loginByEmail', userController.loginWithEmail);
 
 
 

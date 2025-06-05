@@ -1,40 +1,48 @@
 const dataSource = require('../Datasource/MySQLMngr');
-const bcrypt = require('bcrypt'); 
-
-/*
-dependencies for encryption are 
-jsonwebtoken, bcrypt and cookie-parser
-*/
+const bcrypt = require('bcrypt');
 
 /**
- * This method hashes a given password
- * @param {*} pass the users password
- * @returns encrypted password
+ * Este método encripta la contraseña proporcionada.
+ * @param {*} pass contraseña en texto plano
+ * @returns contraseña encriptada
  */
 async function encryptPassword(pass){
-    let password = await bcrypt.hash(pass,8);
-    return password;
+    return await bcrypt.hash(pass, 8);
 }
 
-/** 
- * this method determines whether the user has given correct credentials.
- * RECAL that is more secure to use bcrypt.compare to determine if both passwords are the same.
- * 
- * @param {*} username the username of the given user
- * @param {*} password the password that he/she has provided
- * @returns the user.
+/**
+ * Este método compara una contraseña en texto plano con una encriptada.
+ * @param {String} plain contraseña proporcionada por el usuario
+ * @param {String} hashed contraseña guardada en la base de datos
+ * @returns true si coinciden, false si no
+ */
+async function comparePassword(plain, hashed){
+    return await bcrypt.compare(plain, hashed);
+}
+
+/**
+ * Verifica si el usuario con ese username y contraseña existe (versión antigua, aún usada).
+ * @param {*} username 
+ * @param {*} password 
+ * @returns user si es válido, null si no
  */
 async function isValidUser(username,password){
-    let query = 'SELECT id, name,username, password, age, hash_password from users where username = ?';
+    let query = 'SELECT ID_usuario, username, contrasenaHashed, email FROM usuario WHERE username = ?';
     let params = [username];
-    qResult = await dataSource.getDataWithParams(query,params);
-    let user = qResult.rows[0];
-    if(user){
-        let isEqual = await bcrypt.compare(password, user.hash_password);
-        if(isEqual)
+    const qResult = await dataSource.getDataWithParams(query, params);
+    const user = qResult.rows[0];
+    
+    if (user) {
+        const isEqual = await comparePassword(password, user.contrasenaHashed);
+        if (isEqual)
             return user;
     }
+
     return null;
 }
 
-module.exports = {encryptPassword,isValidUser}
+module.exports = {
+    encryptPassword,
+    comparePassword, // 👈 esta es la que faltaba exportar
+    isValidUser
+};

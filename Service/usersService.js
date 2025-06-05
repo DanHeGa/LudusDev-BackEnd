@@ -134,10 +134,35 @@ async function deleteUser(user_id){
     return qResult;
 }
 
+/**
+ * Verifica si existe un usuario con ese email y contraseña.
+ * @param {String} email 
+ * @param {String} password 
+ * @returns el usuario si es válido o null
+ */
+async function validateUserByEmail(email, password) {
+    try {
+        const query = `SELECT * FROM usuario WHERE email = ?`;
+        const result = await dataSource.getDataWithParams(query, [email]);
+
+        if (result.rows.length === 0) return null;
+
+        const user = result.rows[0];
+        const isPasswordValid = await hashService.comparePassword(password, user.contrasenaHashed);
+
+        return isPasswordValid ? user : null;
+    } catch (err) {
+        console.error("Error en validateUserByEmail:", err.message);
+        return null;
+    }
+}
+
+
 module.exports = {
     getUsers,
     findUser,
     insertUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    validateUserByEmail
 }
