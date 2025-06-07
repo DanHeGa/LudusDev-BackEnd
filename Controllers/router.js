@@ -22,6 +22,8 @@ const faunaPuntoConteo = require('./API/faunaPuntoConteoController'); // Lucio: 
 const validacionCobertura = require('./API/validacionCoberturaController');// ← Regina: Validación Cobertura  
 // LOGIN User Controller
 const userController = require('./API/usersRestController'); // ajusta la ruta si es necesario
+// Convocatrias
+const convocatoria = require('./API/convocatoriaRestController'); // ← Angela: Convocatorias
 
 
 const router = express.Router();
@@ -38,6 +40,9 @@ router.post(constants.contextURL + constants.apiURL + "/newFaunaPuntoConteo", fa
 router.post(constants.contextURL + constants.apiURL + "/newUser", userController.insertUser);
 router.get(constants.contextURL + constants.apiURL + "/getUsers", userController.getUsers);
 router.post(constants.contextURL + constants.apiURL + '/loginByEmail', userController.loginWithEmail);
+// Convocatorias <- Angela: Convocatorias RutaS
+router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", convocatoria.insertConvocatoria);
+router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convocatoria.getConvocatorias);
 
 
 
