@@ -24,6 +24,7 @@ const validacionCobertura = require('./API/validacionCoberturaController');// �
 const userController = require('./API/usersRestController'); // ajusta la ruta si es necesario
 // Convocatrias
 const convocatoria = require('./API/convocatoriaRestController'); // ← Angela: Convocatorias
+const soporteController = require('./API/soporteController');
 
 
 const router = express.Router();
@@ -47,5 +48,7 @@ router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convoc
 
 
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
+
+router.post(constants.contextURL + constants.apiURL + "/soporte", soporteController.crearSoporte); // <-- Agrega esta línea
 
 module.exports = router;
