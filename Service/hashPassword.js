@@ -43,6 +43,6 @@ async function isValidUser(username,password){
 
 module.exports = {
     encryptPassword,
-    comparePassword, // 👈 esta es la que faltaba exportar
+    comparePassword, 
     isValidUser
 };
