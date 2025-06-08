@@ -83,6 +83,25 @@ async function getUsers(req,res){
     }
 }
 
+async function updateUserPass(req,res){
+    try{       
+        let user = req.body;
+        const result = await userService.updateUserPassword(user);
+        res.status(200);
+        res.json({
+            "status"  : "success",
+            "total"   : result.changes
+        });
+    }catch(error){
+        let jsonError = {
+            "status"  : "error",
+            "message" : error.message
+        };
+        console.log(error);
+        res.status(500);
+        res.send(jsonError);
+    }
+}
 
 /**
  * Method that returns a specific user based on its id.
@@ -216,5 +235,13 @@ async function loginWithEmail(req, res) {
 
 
 module.exports = {
-    execLogin,authenticateToken,getUsers,findUser,insertUser,updateUser,deleteUser, loginWithEmail
+    execLogin,
+    authenticateToken,
+    getUsers,
+    findUser,
+    insertUser,
+    updateUser,
+    deleteUser, 
+    loginWithEmail,
+    updateUserPass
 }

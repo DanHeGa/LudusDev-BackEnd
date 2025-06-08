@@ -44,11 +44,10 @@ router.post(constants.contextURL + constants.apiURL + '/loginByEmail', userContr
 // Convocatorias <- Angela: Convocatorias RutaS
 router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", convocatoria.insertConvocatoria);
 router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convocatoria.getConvocatorias);
-
-
-
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
 
-router.post(constants.contextURL + constants.apiURL + "/soporte", soporteController.crearSoporte); // <-- Agrega esta línea
+router.post(constants.contextURL + constants.apiURL + "/soporte", soporteController.crearSoporte); // 
+//cambio de contraseña -> Dani
+router.post(constants.contextURL + constants.apiURL + "/cambioContra", userController.updateUserPass);
 
 module.exports = router;

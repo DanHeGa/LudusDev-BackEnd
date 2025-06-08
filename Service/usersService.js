@@ -117,6 +117,30 @@ async function updateUser(user){
 }
 
 /**
+ * Method that updates a user into the database.
+ * gets an object with the user username and new password
+ * @param {*} user 
+ * @returns 
+ */
+async function updateUserPassword(user){
+    let qResult;
+    try{
+        let query = `
+            UPDATE usuario 
+            SET contrasenaHashed = ?
+            WHERE username = ?
+        `;
+        const hash = await hashService.encryptPassword(user.password);
+        let params = [hash, user.username]; // <-- Cambia aquí
+        qResult = await dataSource.updateData(query,params);
+        console.log("Filas afectadas:", qResult.affectedRows || qResult.rowCount || JSON.stringify(qResult));
+    }catch(err){
+        qResult = new dataSource.QueryResult(false,[],0,0,err.message);
+    }
+    return qResult;
+}
+
+/**
  * Method that deletes a user from the database.
  * @param {*} user_id 
  * @returns 
@@ -164,5 +188,6 @@ module.exports = {
     insertUser,
     updateUser,
     deleteUser,
-    validateUserByEmail
+    validateUserByEmail,
+    updateUserPassword
 }
