@@ -31,6 +31,9 @@ const userProfileController = require('./API/userProfileController');
 const convocatoria = require('./API/convocatoriaRestController'); // ← Angela: Convocatorias
 const soporteController = require('./API/soporteController');
 
+// Anteproyectos
+const anteproyectoController = require('./API/anteproyectoController');
+
 
 const router = express.Router();
 
@@ -56,6 +59,9 @@ router.get(constants.contextURL + constants.apiURL + "/getUserProfileById/:id", 
 router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", convocatoria.insertConvocatoria);
 router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convocatoria.getConvocatorias);
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
+
+// Anteproyectos
+router.post(constants.contextURL + constants.apiURL + "/newAnteproyecto", anteproyectoController.insertAnteproyecto);
 
 router.post(constants.contextURL + constants.apiURL + "/soporte", soporteController.crearSoporte); // 
 //cambio de contraseña -> Dani
