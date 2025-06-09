@@ -62,6 +62,11 @@ router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.
 
 // Anteproyectos
 router.post(constants.contextURL + constants.apiURL + "/newAnteproyecto", anteproyectoController.insertAnteproyecto);
+router.put(constants.contextURL + constants.apiURL + "/updateAnteproyecto/:id", anteproyectoController.updateAnteproyecto);
+router.delete(constants.contextURL + constants.apiURL + "/deleteAnteproyecto/:id", anteproyectoController.deleteAnteproyecto);
+router.get(constants.contextURL + constants.apiURL + "/getAnteproyectos", anteproyectoController.getAnteproyectos);
+router.get(constants.contextURL + constants.apiURL + "/getAnteproyecto/:id", anteproyectoController.getAnteproyectoById);
+
 
 router.post(constants.contextURL + constants.apiURL + "/soporte", soporteController.crearSoporte); // 
 //cambio de contraseña -> Dani
