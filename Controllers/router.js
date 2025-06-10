@@ -61,16 +61,16 @@ router.post(constants.contextURL + constants.apiURL + "/newUserProfile", userPro
 router.get(constants.contextURL + constants.apiURL + "/getAllUserProfiles", userProfileController.getAllUserProfiles);
 router.get(constants.contextURL + constants.apiURL + "/getUserProfileById/:id", userProfileController.getUserProfileById);
 
-//USER get
+//USER get based on their status
 router.get(constants.contextURL + constants.apiURL + "/getStatusUsers", userController.authenticateToken, userController.getUsersFromStatus);
 
 
-// Convocatorias <- Angela: Convocatorias RutaS
-router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", convocatoria.insertConvocatoria);
-router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convocatoria.getConvocatorias);
-router.delete(constants.contextURL + constants.apiURL + "/deleteConvocatoria/:id", convocatoria.deleteConvocatoria);
-router.put(constants.contextURL + constants.apiURL + "/updateConvocatoria/:id", convocatoria.updateConvocatoria);
-router.get(constants.contextURL + constants.apiURL + "/getConvocatoriasByUser/:userId", convocatoria.getConvocatoriasByUser);
+// Convocatorias <- Angela: Convocatorias RutaS, SECURED
+router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", userController.authenticateToken, convocatoria.insertConvocatoria);
+router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", userController.authenticateToken, convocatoria.getConvocatorias);
+router.delete(constants.contextURL + constants.apiURL + "/deleteConvocatoria/:id", userController.authenticateToken, convocatoria.deleteConvocatoria);
+router.put(constants.contextURL + constants.apiURL + "/updateConvocatoria/:id", userController.authenticateToken, convocatoria.updateConvocatoria);
+router.get(constants.contextURL + constants.apiURL + "/getConvocatoriasByUser/:userId", userController.authenticateToken, convocatoria.getConvocatoriasByUser);
 
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
 // Anteproyectos
