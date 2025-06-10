@@ -46,6 +46,8 @@ router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.
 router.post(constants.contextURL + constants.apiURL + "/newVegetacion", vegetacion.insertVegetacion); // ← Angela: Parcela Vegetación RUTA
 router.post(constants.contextURL + constants.apiURL + "/newVariablesClimaticas", varClim.insertVariablesClimaticas); // ← Angela: Variables Climáticas RUTA
 router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.insertRecord);
+//get de records segun el tipo
+router.get(constants.contextURL + constants.apiURL + "/recordTypesNum", userController.authenticateToken, basico.getRecordTypesNum);
 router.post(constants.contextURL + constants.apiURL + "/newValidacionCobertura", validacionCobertura.newValidacionCobertura);// ← Regina: Validación Cobertura RUTA
 //router.post(constants.contextURL + constants.apiURL + "/newFaunaTransecto", faunaTransecto.insertFaunaTransecto); // Lucio: Fauna Transecto RUTA
 router.post(constants.contextURL + constants.apiURL + "/newFaunaPuntoConteo", faunaPuntoConteo.postFaunaPuntoConteo); // Lucio: Fauna Punto Conteo RUTA
@@ -59,21 +61,23 @@ router.post(constants.contextURL + constants.apiURL + "/newUserProfile", userPro
 router.get(constants.contextURL + constants.apiURL + "/getAllUserProfiles", userProfileController.getAllUserProfiles);
 router.get(constants.contextURL + constants.apiURL + "/getUserProfileById/:id", userProfileController.getUserProfileById);
 
-// Convocatorias <- Angela: Convocatorias Rutas
-router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", convocatoria.insertConvocatoria);
-router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convocatoria.getConvocatorias);
-router.delete(constants.contextURL + constants.apiURL + "/deleteConvocatoria/:id", convocatoria.deleteConvocatoria);
-router.put(constants.contextURL + constants.apiURL + "/updateConvocatoria/:id", convocatoria.updateConvocatoria);
-router.get(constants.contextURL + constants.apiURL + "/getConvocatoriasByUser/:userId", convocatoria.getConvocatoriasByUser);
+//USER get based on their status, SECURED, used for the admin dashboard
+router.get(constants.contextURL + constants.apiURL + "/getStatusUsers", userController.authenticateToken, userController.getUsersFromStatus);
 
+// Convocatorias <- Angela: Convocatorias RutaS, SECURED
+router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", userController.authenticateToken, convocatoria.insertConvocatoria);
+router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convocatoria.getConvocatorias);
+router.delete(constants.contextURL + constants.apiURL + "/deleteConvocatoria/:id", userController.authenticateToken, convocatoria.deleteConvocatoria);
+router.put(constants.contextURL + constants.apiURL + "/updateConvocatoria/:id", userController.authenticateToken, convocatoria.updateConvocatoria);
+router.get(constants.contextURL + constants.apiURL + "/getConvocatoriasByUser/:userId", userController.authenticateToken, convocatoria.getConvocatoriasByUser);
 
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
-// Anteproyectos
-router.post(constants.contextURL + constants.apiURL + "/newAnteproyecto", anteproyectoController.insertAnteproyecto);
-router.put(constants.contextURL + constants.apiURL + "/updateAnteproyecto/:id", anteproyectoController.updateAnteproyecto);
-router.delete(constants.contextURL + constants.apiURL + "/deleteAnteproyecto/:id", anteproyectoController.deleteAnteproyecto);
-router.get(constants.contextURL + constants.apiURL + "/getAnteproyectos", anteproyectoController.getAnteproyectos);
-router.get(constants.contextURL + constants.apiURL + "/getAnteproyecto/:id", anteproyectoController.getAnteproyectoById);
+// Anteproyectos, SECURED
+router.post(constants.contextURL + constants.apiURL + "/newAnteproyecto", userController.authenticateToken, anteproyectoController.insertAnteproyecto);
+router.put(constants.contextURL + constants.apiURL + "/updateAnteproyecto/:id", userController.authenticateToken, anteproyectoController.updateAnteproyecto);
+router.delete(constants.contextURL + constants.apiURL + "/deleteAnteproyecto/:id", userController.authenticateToken, anteproyectoController.deleteAnteproyecto);
+router.get(constants.contextURL + constants.apiURL + "/getAnteproyectos", userController.authenticateToken, anteproyectoController.getAnteproyectos);
+router.get(constants.contextURL + constants.apiURL + "/getAnteproyecto/:id", userController.authenticateToken, anteproyectoController.getAnteproyectoById);
 
 // SUBIR DOCUMENTOS (BORRAR DESPUES DE PRUEBAS)
 router.post(constants.contextURL + constants.apiURL + "/uploadFile", documentRestController.upload.single('file'), documentRestController.processUpload);
