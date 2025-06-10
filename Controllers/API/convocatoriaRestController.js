@@ -41,4 +41,70 @@ async function getConvocatorias(req, res) {
     }
 }
 
-module.exports = { insertConvocatoria, getConvocatorias };
+/**
+ * Elimina una convocatoria por ID.
+ */
+async function deleteConvocatoria(req, res) {
+    try {
+        const { id } = req.params;
+        const result = await convocatoriaService.deleteConvocatoria(id);
+
+        res.status(200).json({
+            status: "success",
+            message: `Convocatoria con ID ${id} eliminada.`,
+            result
+        });
+    } catch (error) {
+        console.error("❌ Error al eliminar convocatoria:", error);
+        res.status(500).json({ status: "error", message: error.message });
+    }
+}
+
+/**
+ * Actualiza una convocatoria por ID.
+ */
+async function updateConvocatoria(req, res) {
+    try {
+        const { id } = req.params;
+        const data = req.body;
+
+        const result = await convocatoriaService.updateConvocatoria(id, data);
+
+        res.status(200).json({
+            status: "success",
+            message: `Convocatoria con ID ${id} actualizada.`,
+            result
+        });
+    } catch (error) {
+        console.error("❌ Error al actualizar convocatoria:", error);
+        res.status(500).json({ status: "error", message: error.message });
+    }
+}
+
+/**
+ * Obtiene convocatorias filtradas por el ID del creador.
+ */
+async function getConvocatoriasByUser(req, res) {
+    try {
+        const { userId } = req.params;
+        const result = await convocatoriaService.getConvocatoriasByUser(userId);
+
+        res.status(200).json({
+            status: "success",
+            total: result.rows.length,
+            records: result.rows
+        });
+    } catch (error) {
+        console.error("❌ Error al obtener convocatorias por usuario:", error);
+        res.status(500).json({ status: "error", message: error.message });
+    }
+}
+
+
+
+module.exports = {
+    insertConvocatoria,
+    getConvocatorias,
+    updateConvocatoria,
+    deleteConvocatoria,
+    getConvocatoriasByUser};
