@@ -32,6 +32,7 @@ const convocatoria = require('./API/convocatoriaRestController'); // ← Angela:
 const soporteController = require('./API/soporteController');
 
 
+
 const router = express.Router();
 
 //API ACTIVITY ROUTES, no need of authentication in this part (for now).
@@ -52,9 +53,14 @@ router.post(constants.contextURL + constants.apiURL + "/newUserProfile", userPro
 router.get(constants.contextURL + constants.apiURL + "/getAllUserProfiles", userProfileController.getAllUserProfiles);
 router.get(constants.contextURL + constants.apiURL + "/getUserProfileById/:id", userProfileController.getUserProfileById);
 
-// Convocatorias <- Angela: Convocatorias RutaS
+// Convocatorias <- Angela: Convocatorias Rutas
 router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", convocatoria.insertConvocatoria);
 router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convocatoria.getConvocatorias);
+router.delete(constants.contextURL + constants.apiURL + "/deleteConvocatoria/:id", convocatoria.deleteConvocatoria);
+router.put(constants.contextURL + constants.apiURL + "/updateConvocatoria/:id", convocatoria.updateConvocatoria);
+router.get(constants.contextURL + constants.apiURL + "/getConvocatoriasByUser/:userId", convocatoria.getConvocatoriasByUser);
+
+
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
 
 router.post(constants.contextURL + constants.apiURL + "/soporte", soporteController.crearSoporte); // 
