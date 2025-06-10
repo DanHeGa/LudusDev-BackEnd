@@ -31,4 +31,19 @@ async function newRecord(reqJson) {
     }
 } 
 
-module.exports = { newRecord };
+async function getRecordTypes() {
+    let qResult;
+    try {
+        let query = "select count(r.ID_tipoRegistro) as total, t.nombreTipoRegistro as recordType from registro r join tiporegistro t on t.ID_tipoRegistro = r.ID_tipoRegistro group by t.nombreTipoRegistro;";
+        qResult = await dataSource.getData(query);
+        return qResult.rows;
+    } catch(err) {
+        console.log("Error al get de records ", err);
+        throw err;
+    }
+}
+
+module.exports = { 
+    newRecord,
+    getRecordTypes
+ };

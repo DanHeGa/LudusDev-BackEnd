@@ -84,6 +84,25 @@ async function updateUserPass(req,res){
     }
 }
 
+async function getUsersFromStatus(req, res){
+    try {
+        let userStatus = req.query.status;
+        const result = await userService.countUsers(userStatus);
+        const total = result.rows[0]?.total || 0;
+        res.status(200);
+        res.json({
+            "status"  : "success",
+            "total" : total
+        });
+    } catch(err) {
+        let jsonError = {
+            "status": "failed"
+        };
+        console.log(err);
+        res.status(500).send(jsonError);
+    }
+}
+
 /**
  * Method that returns a specific user based on its id.
  * 
@@ -232,5 +251,6 @@ module.exports = {
     updateUser,
     deleteUser, 
     loginWithEmail, //creates token
-    updateUserPass
+    updateUserPass,
+    getUsersFromStatus
 }

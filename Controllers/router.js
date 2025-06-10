@@ -42,6 +42,8 @@ router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.
 router.post(constants.contextURL + constants.apiURL + "/newVegetacion", vegetacion.insertVegetacion); // ← Angela: Parcela Vegetación RUTA
 router.post(constants.contextURL + constants.apiURL + "/newVariablesClimaticas", varClim.insertVariablesClimaticas); // ← Angela: Variables Climáticas RUTA
 router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.insertRecord);
+//get de records segun el tipo
+router.get(constants.contextURL + constants.apiURL + "/recordTypesNum", userController.authenticateToken, basico.getRecordTypesNum);
 router.post(constants.contextURL + constants.apiURL + "/newValidacionCobertura", validacionCobertura.newValidacionCobertura);// ← Regina: Validación Cobertura RUTA
 //router.post(constants.contextURL + constants.apiURL + "/newFaunaTransecto", faunaTransecto.insertFaunaTransecto); // Lucio: Fauna Transecto RUTA
 router.post(constants.contextURL + constants.apiURL + "/newFaunaPuntoConteo", faunaPuntoConteo.postFaunaPuntoConteo); // Lucio: Fauna Punto Conteo RUTA
@@ -55,9 +57,13 @@ router.post(constants.contextURL + constants.apiURL + "/newUserProfile", userPro
 router.get(constants.contextURL + constants.apiURL + "/getAllUserProfiles", userProfileController.getAllUserProfiles);
 router.get(constants.contextURL + constants.apiURL + "/getUserProfileById/:id", userProfileController.getUserProfileById);
 
+//USER get
+router.get(constants.contextURL + constants.apiURL + "/getStatusUsers", userController.authenticateToken, userController.getUsersFromStatus);
+
+
 // Convocatorias <- Angela: Convocatorias RutaS
-router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", convocatoria.insertConvocatoria);
-router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convocatoria.getConvocatorias);
+router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", userController.authenticateToken, convocatoria.insertConvocatoria);
+router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", userController.authenticateToken, convocatoria.getConvocatorias);
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
 // Anteproyectos
 router.post(constants.contextURL + constants.apiURL + "/newAnteproyecto", anteproyectoController.insertAnteproyecto);

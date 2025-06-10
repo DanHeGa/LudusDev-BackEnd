@@ -31,6 +31,21 @@ async function getUsers(){
     return qResult;
 }
 
+/**
+ * Method that retrieves how many users with an specified status exists
+ * @param {*} status int 1 for active, 2 for inactive
+ * @returns total users with status as 1 | 2
+ */
+async function countUsers(status){
+    let qResult;
+    try{
+        let query = 'select count(ID_usuario) as total from usuario where statusUsuario = ?';
+        qResult = await dataSource.getDataWithParams(query, [status]);
+    } catch(error) {
+        qResult1 = new dataSource.QueryResult(false,[],0,0,error.message);
+    }
+    return qResult
+}
 
 /**
  * This method gets a user by its id.
@@ -189,5 +204,6 @@ module.exports = {
     updateUser,
     deleteUser,
     validateUserByEmail,
-    updateUserPassword
+    updateUserPassword,
+    countUsers
 }

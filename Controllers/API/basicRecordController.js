@@ -21,4 +21,25 @@ async function insertRecord(req,res){
     }
 }
 
-module.exports = {insertRecord};
+async function getRecordTypesNum(req, res){
+    try{
+        const result = await basic.getRecordTypes();
+        res.status(200);
+        res.json({
+            "status" : "success",
+            "Result" : result //what appears in dbeaver when you make the request, literally the rows your asking for 
+        })
+    }catch(error) {
+        let jsonError = {
+            "status" : "Error",
+            "message" : error.message 
+        };
+        console.log(error);
+        res.status(500).send(jsonError);
+    }
+}
+
+module.exports = {
+    insertRecord,
+    getRecordTypesNum
+};
