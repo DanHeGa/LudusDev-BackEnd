@@ -34,6 +34,9 @@ const soporteController = require('./API/soporteController');
 // Anteproyectos
 const anteproyectoController = require('./API/anteproyectoController');
 
+// Document Upload
+const documentRestController = require('./API/documentRestController');
+
 
 
 const router = express.Router();
@@ -72,6 +75,8 @@ router.delete(constants.contextURL + constants.apiURL + "/deleteAnteproyecto/:id
 router.get(constants.contextURL + constants.apiURL + "/getAnteproyectos", anteproyectoController.getAnteproyectos);
 router.get(constants.contextURL + constants.apiURL + "/getAnteproyecto/:id", anteproyectoController.getAnteproyectoById);
 
+// SUBIR DOCUMENTOS (BORRAR DESPUES DE PRUEBAS)
+router.post(constants.contextURL + constants.apiURL + "/uploadFile", documentRestController.upload.single('file'), documentRestController.processUpload);
 
 router.post(constants.contextURL + constants.apiURL + "/soporte",soporteController.crearSoporte); // 
 //cambio de contraseña -> Dani
