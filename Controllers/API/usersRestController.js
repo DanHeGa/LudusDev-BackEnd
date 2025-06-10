@@ -10,10 +10,12 @@
  */
 const userService = require('../../Service/usersService');
 const hashService = require('../../Service/hashPassword');
+const userProfileController = require('./userProfileController');
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
 const SECRET = process.env.SECRET;
+
 
 /**
  * Middleware that will execute before each protected URL
@@ -191,7 +193,7 @@ async function deleteUser(req,res){
 }
 
 /**
- * Nuevo endpoint de login usando email y password.
+ *  Endpoint de login usando email y password.
  */
 async function loginWithEmail(req, res) {
     const { email, password } = req.body;
