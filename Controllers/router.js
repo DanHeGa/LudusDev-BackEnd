@@ -67,7 +67,7 @@ router.get(constants.contextURL + constants.apiURL + "/getStatusUsers", userCont
 
 // Convocatorias <- Angela: Convocatorias RutaS, SECURED
 router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", userController.authenticateToken, convocatoria.insertConvocatoria);
-router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", userController.authenticateToken, convocatoria.getConvocatorias);
+router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convocatoria.getConvocatorias);
 router.delete(constants.contextURL + constants.apiURL + "/deleteConvocatoria/:id", userController.authenticateToken, convocatoria.deleteConvocatoria);
 router.put(constants.contextURL + constants.apiURL + "/updateConvocatoria/:id", userController.authenticateToken, convocatoria.updateConvocatoria);
 router.get(constants.contextURL + constants.apiURL + "/getConvocatoriasByUser/:userId", userController.authenticateToken, convocatoria.getConvocatoriasByUser);
