@@ -40,3 +40,57 @@ module.exports = {
     insertConvocatoria,
     getConvocatorias
 };
+
+/**
+ * Elimina una convocatoria por ID.
+ * @param {number} id - ID de la convocatoria.
+ */
+async function deleteConvocatoria(id) {
+    const query = `DELETE FROM convocatoria WHERE ID_convocatoria = ?`;
+    return await dataSource.deleteData(query, [id]);
+}
+
+/**
+ * Actualiza una convocatoria por ID.
+ * @param {number} id - ID de la convocatoria.
+ * @param {Object} data - Campos a actualizar.
+ */
+async function updateConvocatoria(id, data) {
+    // Construimos dinámicamente las partes del query
+    const fields = [];
+    const values = [];
+
+    for (const [key, value] of Object.entries(data)) {
+        fields.push(`${key} = ?`);
+        values.push(value);
+    }
+
+    // Si no hay campos, no hacemos update
+    if (fields.length === 0) {
+        return { status: false, err: "No fields to update", changes: 0 };
+    }
+
+    const query = `UPDATE convocatoria SET ${fields.join(', ')} WHERE ID_convocatoria = ?`;
+    values.push(id); // Agrega el ID al final
+
+    return await dataSource.updateData(query, values);
+}
+
+/**
+ * Consulta convocatorias por ID del creador.
+ * @param {number} userId - ID del usuario creador.
+ * @returns {Object} Resultado de la consulta.
+ */
+async function getConvocatoriasByUser(userId) {
+    const query = `SELECT * FROM convocatoria WHERE creadoPor = ? ORDER BY fechaCreacion DESC`;
+    return await dataSource.getDataWithParams(query, [userId]);
+}
+
+
+module.exports = {
+    insertConvocatoria,
+    getConvocatorias,
+    deleteConvocatoria,
+    updateConvocatoria,
+    getConvocatoriasByUser
+};

@@ -34,6 +34,10 @@ const soporteController = require('./API/soporteController');
 // Anteproyectos
 const anteproyectoController = require('./API/anteproyectoController');
 
+// Document Upload
+const documentRestController = require('./API/documentRestController');
+
+
 
 const router = express.Router();
 
@@ -62,8 +66,12 @@ router.get(constants.contextURL + constants.apiURL + "/getStatusUsers", userCont
 
 
 // Convocatorias <- Angela: Convocatorias RutaS
-router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", userController.authenticateToken, convocatoria.insertConvocatoria);
-router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", userController.authenticateToken, convocatoria.getConvocatorias);
+router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", convocatoria.insertConvocatoria);
+router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convocatoria.getConvocatorias);
+router.delete(constants.contextURL + constants.apiURL + "/deleteConvocatoria/:id", convocatoria.deleteConvocatoria);
+router.put(constants.contextURL + constants.apiURL + "/updateConvocatoria/:id", convocatoria.updateConvocatoria);
+router.get(constants.contextURL + constants.apiURL + "/getConvocatoriasByUser/:userId", convocatoria.getConvocatoriasByUser);
+
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
 // Anteproyectos
 router.post(constants.contextURL + constants.apiURL + "/newAnteproyecto", anteproyectoController.insertAnteproyecto);
@@ -72,6 +80,8 @@ router.delete(constants.contextURL + constants.apiURL + "/deleteAnteproyecto/:id
 router.get(constants.contextURL + constants.apiURL + "/getAnteproyectos", anteproyectoController.getAnteproyectos);
 router.get(constants.contextURL + constants.apiURL + "/getAnteproyecto/:id", anteproyectoController.getAnteproyectoById);
 
+// SUBIR DOCUMENTOS (BORRAR DESPUES DE PRUEBAS)
+router.post(constants.contextURL + constants.apiURL + "/uploadFile", documentRestController.upload.single('file'), documentRestController.processUpload);
 
 router.post(constants.contextURL + constants.apiURL + "/soporte",soporteController.crearSoporte); // 
 //cambio de contraseña -> Dani
