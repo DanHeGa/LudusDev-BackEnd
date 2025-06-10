@@ -118,26 +118,31 @@ async function findUser(req,res){
  * @param {Object} req the request object
  * @param {Object} res the response object
  */
-async function insertUser(req,res){
-    try{       
-        let user = req.body;
-        const result = await userService.insertUser(user);
-        res.status(200);
-        res.json({
-            "status"  : "success",
-            "total"   : result.changes,
-            "gen_id" : result.gen_id
-        });
-    }catch(error){
-        let jsonError = {
-            "status"  : "error",
-            "message" : error.message
-        };
-        console.log(error);
-        res.status(500);
-        res.send(jsonError);
+
+async function insertUser(req, res) {
+  try {
+    const { username, email, password, statusUsuario } = req.body;
+
+    if (!username || !email || !password || !statusUsuario) {
+      return res.status(400).json({ message: 'Missing required fields.' });
     }
+
+    const user = { username, email, password, statusUsuario };
+    const result = await userService.insertUser(user);
+
+    if (!result.status) {
+      // Aquí manejas el error que retorna el servicio (por ejemplo duplicado)
+      return res.status(409).json({ message: result.err });
+    }
+
+    res.status(201).json({ message: 'User created successfully.', userId: result.gen_id });
+
+  } catch (error) {
+    console.error('ERROR EN insertUser:', error);
+    res.status(500).json({ message: 'Error creando el usuario.' });
+  }
 }
+
 
 
 /**

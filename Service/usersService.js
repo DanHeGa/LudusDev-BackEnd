@@ -58,7 +58,22 @@ async function findUser(username){
  */
 async function insertUser(user){
     let qResult;
+
     try {
+        // Verificamos si ya existe un usuario con ese username
+        const userByUsername = await findUser(user.username);
+        if (userByUsername.rows.length > 0) {
+            return new dataSource.QueryResult(false, [], 0, 0, `El nombre de usuario '${user.username}' ya está en uso.`);
+        }
+
+        // Verificamos si ya existe un usuario con ese email
+        const emailQuery = `SELECT ID_usuario FROM usuario WHERE email = ?`;
+        const userByEmail = await dataSource.getDataWithParams(emailQuery, [user.email]);
+        if (userByEmail.rows.length > 0) {
+            return new dataSource.QueryResult(false, [], 0, 0, `El correo electrónico '${user.email}' ya está en uso.`);
+        }
+
+        // Si no existe duplicado, se inserta
         const query = `
             INSERT INTO usuario (username, contrasenaHashed, email, fechaRegistro, statusUsuario)
             VALUES (?, ?, ?, ?, ?)
@@ -73,25 +88,22 @@ async function insertUser(user){
             user.statusUsuario
         ];
 
-        console.log("QUERY:", query);
-        console.log("PARAMS:", params);
-
         qResult = await dataSource.insertData(query, params);
-
-        // Verifica si fue exitoso
-        console.log("RESULTADO DE INSERCIÓN:", qResult);
+        
+        // If insert was successful, assign EcoRanger role (ID_rol = 3)
+        if (qResult.status && qResult.gen_id) {
+            const assignRoleQuery = `INSERT INTO roles_usuario (ID_usuario, ID_rol) VALUES (?, ?)`;
+            await dataSource.insertData(assignRoleQuery, [qResult.gen_id, 3]);
+        }
 
     } catch (err) {
         console.error("ERROR EN insertUser:", err);
-        if (err instanceof dataSource.QueryResult) {
-            qResult = err;
-        } else {
-            qResult = new dataSource.QueryResult(false, [], 0, 0, err?.message || String(err));
-        }
+        qResult = new dataSource.QueryResult(false, [], 0, 0, err?.message || String(err));
     }
 
     return qResult;
 }
+
 
 /**
  * Method that updates a user into the database.
