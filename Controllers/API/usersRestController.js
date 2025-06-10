@@ -16,27 +16,6 @@ require('dotenv').config()
 const SECRET = process.env.SECRET;
 
 /**
- * HTTP Method that handles authentication
- */
-async function execLogin(req, res) {
-    const { username, password } = req.body;
-    const user = await hashService.isValidUser(username,password)
-  
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-  
-    //CREATES the token
-    const token = jwt.sign(
-      { id: user.id, username: user.username },
-      SECRET,
-      { expiresIn: '1h' }
-    );
-
-    res.json({ token }); // client stores this token
-}
-
-/**
  * Middleware that will execute before each protected URL
  * @param {*} req the original request
  * @param {*} res the users response
@@ -223,25 +202,33 @@ async function loginWithEmail(req, res) {
         return res.status(401).json({ isLogin: false, message: 'Correo o contraseña incorrectos' });
     }
 
+    //create web token
+    const token = jwt.sign(
+        { id: user.id, userGmail: user.gmail},
+        SECRET,
+        {expiresIn: '1h'}
+    )
+
     res.json({
         isLogin: true,
         user: {
             id: user.ID_usuario,
             email: user.email,
             username: user.username
-        }
+        },
+        jwt: token //modified!!!!
     });
 }
 
 
 module.exports = {
-    execLogin,
-    authenticateToken,
+    //execLogin,
+    authenticateToken, //checks user token
     getUsers,
     findUser,
     insertUser,
     updateUser,
     deleteUser, 
-    loginWithEmail,
+    loginWithEmail, //creates token
     updateUserPass
 }

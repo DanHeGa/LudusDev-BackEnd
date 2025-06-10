@@ -30,7 +30,7 @@ const soporteController = require('./API/soporteController');
 const router = express.Router();
 
 //API ACTIVITY ROUTES, no need of authentication in this part (for now).
-router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.newCamaraTrampa);
+router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.newCamaraTrampa);// ← Daniela: Camaras trampa RUTA
 router.post(constants.contextURL + constants.apiURL + "/newVegetacion", vegetacion.insertVegetacion); // ← Angela: Parcela Vegetación RUTA
 router.post(constants.contextURL + constants.apiURL + "/newVariablesClimaticas", varClim.insertVariablesClimaticas); // ← Angela: Variables Climáticas RUTA
 router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.insertRecord);
@@ -39,14 +39,14 @@ router.post(constants.contextURL + constants.apiURL + "/newValidacionCobertura",
 router.post(constants.contextURL + constants.apiURL + "/newFaunaPuntoConteo", faunaPuntoConteo.postFaunaPuntoConteo); // Lucio: Fauna Punto Conteo RUTA
 // LOGIN User Routes
 router.post(constants.contextURL + constants.apiURL + "/newUser", userController.insertUser);
-router.get(constants.contextURL + constants.apiURL + "/getUsers", userController.getUsers);
+router.get(constants.contextURL + constants.apiURL + "/getUsers", userController.authenticateToken,userController.getUsers);//secured
 router.post(constants.contextURL + constants.apiURL + '/loginByEmail', userController.loginWithEmail);
 // Convocatorias <- Angela: Convocatorias RutaS
-router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", convocatoria.insertConvocatoria);
-router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convocatoria.getConvocatorias);
-router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
+router.post(constants.contextURL + constants.apiURL + "/newConvocatoria", userController.authenticateToken, convocatoria.insertConvocatoria);//all these secured
+router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", userController.authenticateToken,convocatoria.getConvocatorias);
+router.post(constants.contextURL + constants.apiURL + "/imageUpload",imageRest.processUpload);
 
-router.post(constants.contextURL + constants.apiURL + "/soporte", soporteController.crearSoporte); // 
+router.post(constants.contextURL + constants.apiURL + "/soporte",soporteController.crearSoporte); // 
 //cambio de contraseña -> Dani
 router.post(constants.contextURL + constants.apiURL + "/cambioContra", userController.updateUserPass);
 
