@@ -31,12 +31,15 @@ const userProfileController = require('./API/userProfileController');
 const convocatoria = require('./API/convocatoriaRestController'); // ← Angela: Convocatorias
 const soporteController = require('./API/soporteController');
 
+// Anteproyectos
+const anteproyectoController = require('./API/anteproyectoController');
+
 
 
 const router = express.Router();
 
 //API ACTIVITY ROUTES, no need of authentication in this part (for now).
-router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.newCamaraTrampa);
+router.post(constants.contextURL + constants.apiURL + "/newCamara", camaraTramp.newCamaraTrampa);// ← Daniela: Camaras trampa RUTA
 router.post(constants.contextURL + constants.apiURL + "/newVegetacion", vegetacion.insertVegetacion); // ← Angela: Parcela Vegetación RUTA
 router.post(constants.contextURL + constants.apiURL + "/newVariablesClimaticas", varClim.insertVariablesClimaticas); // ← Angela: Variables Climáticas RUTA
 router.post(constants.contextURL + constants.apiURL + "/newRecord", basico.insertRecord);
@@ -45,7 +48,7 @@ router.post(constants.contextURL + constants.apiURL + "/newValidacionCobertura",
 router.post(constants.contextURL + constants.apiURL + "/newFaunaPuntoConteo", faunaPuntoConteo.postFaunaPuntoConteo); // Lucio: Fauna Punto Conteo RUTA
 // LOGIN User Routes
 router.post(constants.contextURL + constants.apiURL + "/newUser", userController.insertUser);
-router.get(constants.contextURL + constants.apiURL + "/getUsers", userController.getUsers);
+router.get(constants.contextURL + constants.apiURL + "/getUsers", userController.authenticateToken,userController.getUsers);//secured
 router.post(constants.contextURL + constants.apiURL + '/loginByEmail', userController.loginWithEmail);
 
 //USER PROFILE
@@ -62,8 +65,15 @@ router.get(constants.contextURL + constants.apiURL + "/getConvocatoriasByUser/:u
 
 
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
+// Anteproyectos
+router.post(constants.contextURL + constants.apiURL + "/newAnteproyecto", anteproyectoController.insertAnteproyecto);
+router.put(constants.contextURL + constants.apiURL + "/updateAnteproyecto/:id", anteproyectoController.updateAnteproyecto);
+router.delete(constants.contextURL + constants.apiURL + "/deleteAnteproyecto/:id", anteproyectoController.deleteAnteproyecto);
+router.get(constants.contextURL + constants.apiURL + "/getAnteproyectos", anteproyectoController.getAnteproyectos);
+router.get(constants.contextURL + constants.apiURL + "/getAnteproyecto/:id", anteproyectoController.getAnteproyectoById);
 
-router.post(constants.contextURL + constants.apiURL + "/soporte", soporteController.crearSoporte); // 
+
+router.post(constants.contextURL + constants.apiURL + "/soporte",soporteController.crearSoporte); // 
 //cambio de contraseña -> Dani
 router.post(constants.contextURL + constants.apiURL + "/cambioContra", userController.updateUserPass);
 
