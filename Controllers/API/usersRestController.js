@@ -246,6 +246,27 @@ async function loginWithEmail(req, res) {
     });
 }
 
+/**
+ * Method that returns a specific user's role based on its email.
+ * 
+ * @param {Object} req the request object
+ * @param {Object} res the response object
+ */
+async function getUserRole(req, res) {
+    try {       
+        let email = req.query.email;
+        const result = await userService.getRoleByEmail(email);
+        res.status(200).json({
+            status: "success",
+            result: result.rows // <-- Así accedes a los datos
+        });
+    } catch(error) {
+        res.status(500).json({
+            status: "error",
+            message: error.message
+        });
+    }
+}
 
 module.exports = {
     //execLogin,
@@ -257,5 +278,6 @@ module.exports = {
     deleteUser, 
     loginWithEmail, //creates token
     updateUserPass,
-    getUsersFromStatus
+    getUsersFromStatus,
+    getUserRole
 }

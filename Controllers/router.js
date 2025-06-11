@@ -61,6 +61,7 @@ router.post(constants.contextURL + constants.apiURL + "/newFaunaPuntoConteo", fa
 router.post(constants.contextURL + constants.apiURL + "/newUser", userController.insertUser);
 router.get(constants.contextURL + constants.apiURL + "/getUsers", userController.authenticateToken,userController.getUsers);//secured
 router.post(constants.contextURL + constants.apiURL + '/loginByEmail', userController.loginWithEmail);
+router.get(constants.contextURL + constants.apiURL + "/getRoleByEmail", userController.authenticateToken,userController.getUserRole);//secured
 
 //USER PROFILE
 router.post(constants.contextURL + constants.apiURL + "/newUserProfile", userProfileController.insertUserProfile);

@@ -202,6 +202,24 @@ async function validateUserByEmail(email, password) {
     }
 }
 
+/**
+ * 
+ * This method gets the user's role(3->ecoranger, 2->admin) based on their email
+ * 
+ * @param {String} email Verifica el rol del usuario segun su email
+ * @returns el rol del usuario
+ */
+async function getRoleByEmail(email) {
+    let qResult;
+    try {
+        let query = "select u.email as email, ru.ID_rol as rol from usuario u join roles_usuario ru on ru.ID_usuario = u.ID_usuario where u.email = ?;";
+        qResult = await dataSource.getDataWithParams(query, [email]); 
+    } catch(error) {
+        qResult = new dataSource.QueryResult(false,[],0,0,error.message);
+    }
+    return qResult;
+}
+
 
 module.exports = {
     getUsers,
@@ -211,5 +229,6 @@ module.exports = {
     deleteUser,
     validateUserByEmail,
     updateUserPassword,
-    countUsers
+    countUsers,
+    getRoleByEmail
 }
