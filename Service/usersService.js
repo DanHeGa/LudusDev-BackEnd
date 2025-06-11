@@ -75,20 +75,14 @@ async function insertUser(user){
     let qResult;
 
     try {
-        // Verificamos si ya existe un usuario con ese username
-        const userByUsername = await findUser(user.username);
-        if (userByUsername.rows.length > 0) {
-            return new dataSource.QueryResult(false, [], 0, 0, `El nombre de usuario '${user.username}' ya está en uso.`);
-        }
-
-        // Verificamos si ya existe un usuario con ese email
+        // Validar que no exista un usuario con el mismo email (el username puede repetirse)
         const emailQuery = `SELECT ID_usuario FROM usuario WHERE email = ?`;
         const userByEmail = await dataSource.getDataWithParams(emailQuery, [user.email]);
         if (userByEmail.rows.length > 0) {
             return new dataSource.QueryResult(false, [], 0, 0, `El correo electrónico '${user.email}' ya está en uso.`);
         }
 
-        // Si no existe duplicado, se inserta
+        // Inserción del usuario (username puede estar duplicado)
         const query = `
             INSERT INTO usuario (username, contrasenaHashed, email, fechaRegistro, statusUsuario)
             VALUES (?, ?, ?, ?, ?)
@@ -105,7 +99,7 @@ async function insertUser(user){
 
         qResult = await dataSource.insertData(query, params);
         
-        // If insert was successful, assign EcoRanger role (ID_rol = 3)
+        // Asignar el rol EcoRanger (ID_rol = 3) si la inserción fue exitosa
         if (qResult.status && qResult.gen_id) {
             const assignRoleQuery = `INSERT INTO roles_usuario (ID_usuario, ID_rol) VALUES (?, ?)`;
             await dataSource.insertData(assignRoleQuery, [qResult.gen_id, 3]);

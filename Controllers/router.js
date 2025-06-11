@@ -37,6 +37,12 @@ const anteproyectoController = require('./API/anteproyectoController');
 // Document Upload
 const documentRestController = require('./API/documentRestController');
 
+// Upload Middleware
+const upload = require('../Middleware/uploadMiddleware');
+
+//Documento anteproyecto
+const docAnteproyectoController = require('../Controllers/API/documentoAnteproyectoController');
+
 
 
 const router = express.Router();
@@ -85,5 +91,12 @@ router.post(constants.contextURL + constants.apiURL + "/uploadFile", documentRes
 router.post(constants.contextURL + constants.apiURL + "/soporte",soporteController.crearSoporte); // 
 //cambio de contraseña -> Dani
 router.post(constants.contextURL + constants.apiURL + "/cambioContra", userController.updateUserPass);
+
+// Subir Documento Anteproyecto
+router.post(
+  constants.contextURL + constants.apiURL + "/uploadDocumentoAnteproyecto/:id_anteproyecto",
+  upload.single('file'),
+  docAnteproyectoController.subirDocumento
+);
 
 module.exports = router;
