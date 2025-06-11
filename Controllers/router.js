@@ -41,6 +41,9 @@ const documentRestController = require('./API/documentRestController');
 const upload = require('../Middleware/uploadMiddleware');
 // const uploadProfilePhoto = require('../Middleware/uploadProfilePhoto');
 
+// Documento Convocatoria
+const documentoConvocatoriaController = require('../Controllers/API/documentoConvocatoriaController');
+
 //Documento anteproyecto
 const docAnteproyectoController = require('../Controllers/API/documentoAnteproyectoController');
 
@@ -94,6 +97,17 @@ router.post(constants.contextURL + constants.apiURL + "/soporte",soporteControll
 //cambio de contraseña -> Dani
 router.post(constants.contextURL + constants.apiURL + "/cambioContra", userController.updateUserPass);
 
+// Subir Docuemtno Convocatoria
+router.post(
+  constants.contextURL + constants.apiURL + "/uploadDocumentoConvocatoria/:id_convocatoria",
+  upload.single('file'), documentoConvocatoriaController.insertDocumentoConvocatoria
+);
+
+router.get(
+   constants.contextURL + constants.apiURL + "documentosConvocatoria/:id_convocatoria",
+  documentoConvocatoriaController.getDocumentosPorConvocatoria
+);
+
 // Subir Documento Anteproyecto
 router.post(
   constants.contextURL + constants.apiURL + "/uploadDocumentoAnteproyecto/:id_anteproyecto",
@@ -106,5 +120,6 @@ router.post(
 //   uploadProfilePhoto.upload.single("image"),
 //   uploadProfilePhoto.processUpload
 // );
+
 
 module.exports = router;
