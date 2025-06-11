@@ -39,7 +39,7 @@ const documentRestController = require('./API/documentRestController');
 
 // Upload Middleware
 const upload = require('../Middleware/uploadMiddleware');
-const uploadProfilePhoto = require('../Middleware/uploadProfilePhoto');
+// const uploadProfilePhoto = require('../Middleware/uploadProfilePhoto');
 
 //Documento anteproyecto
 const docAnteproyectoController = require('../Controllers/API/documentoAnteproyectoController');
@@ -101,10 +101,10 @@ router.post(
   docAnteproyectoController.subirDocumento
 );
 // Subir Foto de Perfil
-router.post(
-  constants.contextURL + constants.apiURL + "/uploadProfilePhoto",
-  uploadProfilePhoto.upload.single("image"),
-  uploadProfilePhoto.processUpload
-);
+// router.post(
+//   constants.contextURL + constants.apiURL + "/uploadProfilePhoto",
+//   uploadProfilePhoto.upload.single("image"),
+//   uploadProfilePhoto.processUpload
+// );
 
 module.exports = router;
