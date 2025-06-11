@@ -39,7 +39,8 @@ const documentRestController = require('./API/documentRestController');
 
 // Upload Middleware
 const upload = require('../Middleware/uploadMiddleware');
-const uploadProfilePhoto = require('../Middleware/uploadProfilePhoto');
+const uploadProfilePhoto = require('./API/uploadProfilePhoto');
+
 
 // Documento Convocatoria
 const documentoConvocatoriaController = require('../Controllers/API/documentoConvocatoriaController');
