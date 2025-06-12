@@ -40,6 +40,7 @@ const documentRestController = require('./API/documentRestController');
 // Upload Middleware
 const upload = require('../Middleware/uploadMiddleware');
 const uploadProfilePhoto = require('./API/uploadProfilePhoto');
+const profilePhotoController = require('./API/profilePhotoController');
 
 // Documento Convocatoria
 const documentoConvocatoriaController = require('../Controllers/API/documentoConvocatoriaController');
@@ -121,6 +122,7 @@ router.post(
   uploadProfilePhoto.upload.single("image"),
   uploadProfilePhoto.processUpload
 );
+router.get('/CSoftware/api/profile-photo/:filename', profilePhotoController.getProfilePhoto);
 
 
 module.exports = router;
