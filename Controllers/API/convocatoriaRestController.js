@@ -100,6 +100,24 @@ async function getConvocatoriasByUser(req, res) {
     }
 }
 
+async function getConvoOnName(req, res) {
+    try {
+        const name = req.query.convoName;
+        const result = await convocatoriaService.getConvoByName(name);
+        res.status(200);
+        res.json({
+            status : "success",
+            result : result.rows
+        });
+    } catch(error) {
+        console.log("Failed to get convo by name ", error.message);
+        res.status(500).send(json({
+            status: "failed",
+            message : error.message
+        }));
+    }
+}
+
 
 
 module.exports = {
@@ -107,4 +125,6 @@ module.exports = {
     getConvocatorias,
     updateConvocatoria,
     deleteConvocatoria,
-    getConvocatoriasByUser};
+    getConvocatoriasByUser,
+    getConvoOnName
+};

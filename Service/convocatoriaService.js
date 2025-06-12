@@ -86,11 +86,31 @@ async function getConvocatoriasByUser(userId) {
     return await dataSource.getDataWithParams(query, [userId]);
 }
 
+/**
+ * Gets a convocatoeia based on it's name
+ * @param {name} name conocatoria's name
+ * @returns all the requested convocatoria's info
+ */
+async function getConvoByName(name) {
+    const query = `select 
+                        c.ID_convocatoria as idConvo,
+                        c.nombreConvocatoria as nombreConvo,
+                        c.descripcion as descripcion,
+                        c.fechaCierre as fechaLimite,
+                        c.creadoPor as creadoPor,
+                        c.status as statusConvo
+                    from convocatoria c 
+                    where c.nombreConvocatoria = ?;`;
+    const param = [name];
+    return await dataSource.getDataWithParams(query, param);
+}
+
 
 module.exports = {
     insertConvocatoria,
     getConvocatorias,
     deleteConvocatoria,
     updateConvocatoria,
-    getConvocatoriasByUser
+    getConvocatoriasByUser,
+    getConvoByName
 };

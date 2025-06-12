@@ -47,8 +47,6 @@ const documentoConvocatoriaController = require('../Controllers/API/documentoCon
 //Documento anteproyecto
 const docAnteproyectoController = require('../Controllers/API/documentoAnteproyectoController');
 
-
-
 const router = express.Router();
 
 //API ACTIVITY ROUTES, no need of authentication in this part (for now).
@@ -81,6 +79,7 @@ router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convoc
 router.delete(constants.contextURL + constants.apiURL + "/deleteConvocatoria/:id", userController.authenticateToken, convocatoria.deleteConvocatoria);
 router.put(constants.contextURL + constants.apiURL + "/updateConvocatoria/:id", userController.authenticateToken, convocatoria.updateConvocatoria);
 router.get(constants.contextURL + constants.apiURL + "/getConvocatoriasByUser/:userId", userController.authenticateToken, convocatoria.getConvocatoriasByUser);
+router.get(constants.contextURL + constants.apiURL + "/getConvoByName/", userController.authenticateToken, convocatoria.getConvoOnName);
 
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
 // Anteproyectos, SECURED
@@ -89,6 +88,7 @@ router.put(constants.contextURL + constants.apiURL + "/updateAnteproyecto/:id", 
 router.delete(constants.contextURL + constants.apiURL + "/deleteAnteproyecto/:id", userController.authenticateToken, anteproyectoController.deleteAnteproyecto);
 router.get(constants.contextURL + constants.apiURL + "/getAnteproyectos", userController.authenticateToken, anteproyectoController.getAnteproyectos);
 router.get(constants.contextURL + constants.apiURL + "/getAnteproyecto/:id", userController.authenticateToken, anteproyectoController.getAnteproyectoById);
+router.get(constants.contextURL + constants.apiURL + "/getAnteproyectoByUser/", userController.authenticateToken, anteproyectoController.getAnteproyectoByUser);
 
 // SUBIR DOCUMENTOS (BORRAR DESPUES DE PRUEBAS)
 router.post(constants.contextURL + constants.apiURL + "/uploadFile", documentRestController.upload.single('file'), documentRestController.processUpload);
