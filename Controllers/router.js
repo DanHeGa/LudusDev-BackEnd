@@ -86,6 +86,7 @@ router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.
 router.post(constants.contextURL + constants.apiURL + "/newAnteproyecto", userController.authenticateToken, anteproyectoController.insertAnteproyecto);
 router.put(constants.contextURL + constants.apiURL + "/updateAnteproyecto/:id", userController.authenticateToken, anteproyectoController.updateAnteproyecto);
 router.delete(constants.contextURL + constants.apiURL + "/deleteAnteproyecto/:id", userController.authenticateToken, anteproyectoController.deleteAnteproyecto);
+router.delete(constants.contextURL + constants.apiURL + "/deleteAnteproyectoEspecifico", userController.authenticateToken, anteproyectoController.deleteAnteproyectoEspecifico);
 router.get(constants.contextURL + constants.apiURL + "/getAnteproyectos", userController.authenticateToken, anteproyectoController.getAnteproyectos);
 router.get(constants.contextURL + constants.apiURL + "/getAnteproyecto/:id", userController.authenticateToken, anteproyectoController.getAnteproyectoById);
 router.get(constants.contextURL + constants.apiURL + "/getAnteproyectoByUser/", userController.authenticateToken, anteproyectoController.getAnteproyectoByUser);

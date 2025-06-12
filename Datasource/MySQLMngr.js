@@ -62,7 +62,8 @@ async function open(){
       port: PORT,//constants.dbPort,
       password: PASS,//constants.dbPass,
       database: DB,//constants.dbName,
-      decimalNumbers:true
+      decimalNumbers:true,
+      dateStrings: true //to handle dates as strings and not Date objects
     });
   
     return connection;

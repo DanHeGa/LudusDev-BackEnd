@@ -9,7 +9,7 @@ async function insertAnteproyecto(anteproyecto) {
     // Formatea la fecha a 'YYYY-MM-DD' si existe
     let fechaLimite = anteproyecto.fechaLimite;
     if (fechaLimite) {
-        fechaLimite = new Date(fechaLimite).toISOString().split('T')[0];
+        fechaLimite = fechaLimite.toISOString().split('T')[0];
     }
     
     const query = `
@@ -54,6 +54,11 @@ async function deleteAnteproyecto(id) {
     return await dataSource.deleteData(query, [id]);
 }
 
+async function deleteSpecificAnteproyecto(title, fechaCreacion) {
+    const query = `DELETE FROM anteproyecto WHERE titulo = ? and fechaCreacion = ?;`;
+    return await dataSource.deleteData(query, [title, fechaCreacion]);
+}
+
 async function getAllAnteproyectos() {
     const query = `SELECT * FROM anteproyecto`;
     return await dataSource.getData(query);
@@ -88,5 +93,6 @@ module.exports = {
     deleteAnteproyecto,
     getAllAnteproyectos,
     getAnteproyectoById,
-    getAnteproyectoByUser
+    getAnteproyectoByUser,
+    deleteSpecificAnteproyecto
 };
