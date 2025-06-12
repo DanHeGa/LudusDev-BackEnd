@@ -39,15 +39,13 @@ const documentRestController = require('./API/documentRestController');
 
 // Upload Middleware
 const upload = require('../Middleware/uploadMiddleware');
-// const uploadProfilePhoto = require('../Middleware/uploadProfilePhoto');
+const uploadProfilePhoto = require('./API/uploadProfilePhoto');
 
 // Documento Convocatoria
 const documentoConvocatoriaController = require('../Controllers/API/documentoConvocatoriaController');
 
 //Documento anteproyecto
 const docAnteproyectoController = require('../Controllers/API/documentoAnteproyectoController');
-
-
 
 const router = express.Router();
 
@@ -81,6 +79,7 @@ router.get(constants.contextURL + constants.apiURL + "/getConvocatorias", convoc
 router.delete(constants.contextURL + constants.apiURL + "/deleteConvocatoria/:id", userController.authenticateToken, convocatoria.deleteConvocatoria);
 router.put(constants.contextURL + constants.apiURL + "/updateConvocatoria/:id", userController.authenticateToken, convocatoria.updateConvocatoria);
 router.get(constants.contextURL + constants.apiURL + "/getConvocatoriasByUser/:userId", userController.authenticateToken, convocatoria.getConvocatoriasByUser);
+router.get(constants.contextURL + constants.apiURL + "/getConvoByName/", userController.authenticateToken, convocatoria.getConvoOnName);
 
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
 
@@ -88,8 +87,10 @@ router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.
 router.post(constants.contextURL + constants.apiURL + "/newAnteproyecto", userController.authenticateToken, anteproyectoController.insertAnteproyecto);
 router.put(constants.contextURL + constants.apiURL + "/updateAnteproyecto/:id", userController.authenticateToken, anteproyectoController.updateAnteproyecto);
 router.delete(constants.contextURL + constants.apiURL + "/deleteAnteproyecto/:id", userController.authenticateToken, anteproyectoController.deleteAnteproyecto);
+router.delete(constants.contextURL + constants.apiURL + "/deleteAnteproyectoEspecifico", userController.authenticateToken, anteproyectoController.deleteAnteproyectoEspecifico);
 router.get(constants.contextURL + constants.apiURL + "/getAnteproyectos", userController.authenticateToken, anteproyectoController.getAnteproyectos);
 router.get(constants.contextURL + constants.apiURL + "/getAnteproyecto/:id", userController.authenticateToken, anteproyectoController.getAnteproyectoById);
+router.get(constants.contextURL + constants.apiURL + "/getAnteproyectoByUser/", userController.authenticateToken, anteproyectoController.getAnteproyectoByUser);
 
 // SUBIR DOCUMENTOS (BORRAR DESPUES DE PRUEBAS)
 router.post(constants.contextURL + constants.apiURL + "/uploadFile", documentRestController.upload.single('file'), documentRestController.processUpload);
@@ -116,11 +117,11 @@ router.post(
   docAnteproyectoController.subirDocumento
 );
 // Subir Foto de Perfil
-// router.post(
-//   constants.contextURL + constants.apiURL + "/uploadProfilePhoto",
-//   uploadProfilePhoto.upload.single("image"),
-//   uploadProfilePhoto.processUpload
-// );
+router.post(
+  constants.contextURL + constants.apiURL + "/uploadProfilePhoto",
+  uploadProfilePhoto.upload.single("image"),
+  uploadProfilePhoto.processUpload
+);
 
 
 module.exports = router;

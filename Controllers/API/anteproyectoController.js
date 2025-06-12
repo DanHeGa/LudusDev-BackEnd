@@ -70,6 +70,31 @@ async function deleteAnteproyecto(req, res) {
     }
 }
 
+async function deleteAnteproyectoEspecifico(req, res) {
+    try {
+        const { title, fechaCreacion } = req.body;
+
+        const resultado = await anteproyectoService.deleteSpecificAnteproyecto(title, fechaCreacion);
+
+        if (resultado.getStatus()) {
+            res.status(200).json({ 
+                message: "Anteproyecto específico eliminado correctamente",
+                result:  resultado.rows.affectedRows});
+        } else {
+            res.status(400).json({
+                message: "Error al eliminar el anteproyecto específico",
+                error: resultado.getErr()
+            });
+        }
+    } catch (error) {
+        console.error('Error en deleteAnteproyectoByTitle:', error);
+        res.status(500).json({
+            message: "Error interno del servidor",
+            error: error.message
+        });
+    }
+}
+
 async function getAnteproyectos(req, res) {
     try {
         const resultado = await anteproyectoService.getAllAnteproyectos();
@@ -97,6 +122,21 @@ async function getAnteproyectoById(req, res) {
     }
 }
 
+async function getAnteproyectoByUser(req, res) {
+    try {
+        const userId = req.query.userId;
+        const resultado = await anteproyectoService.getAnteproyectoByUser(userId);
+        res.status(200);
+        res.json({
+            status : "success",
+            result : resultado.rows
+        });
+    } catch (error) {
+        console.error('Error en getAnteproyectoByUser:', error);
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+    }
+}
+
 
 
 module.exports = {
@@ -104,5 +144,7 @@ module.exports = {
     updateAnteproyecto,
     deleteAnteproyecto,
     getAnteproyectos,
-    getAnteproyectoById
+    getAnteproyectoById,
+    getAnteproyectoByUser,
+    deleteAnteproyectoEspecifico
 };

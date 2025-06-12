@@ -6,6 +6,12 @@ const dataSource = require('../Datasource/MySQLMngr');
  * @returns {Object} Resultado de la inserción.
  */
 async function insertAnteproyecto(anteproyecto) {
+    // Formatea la fecha a 'YYYY-MM-DD' si existe
+    let fechaLimite = anteproyecto.fechaLimite;
+    if (fechaLimite) {
+        fechaLimite = fechaLimite.toISOString().split('T')[0];
+    }
+    
     const query = `
         INSERT INTO anteproyecto (
             ID_convocatoria, titulo, descripcion, fechaLimite,
@@ -17,7 +23,7 @@ async function insertAnteproyecto(anteproyecto) {
         anteproyecto.ID_convocatoria,
         anteproyecto.titulo,
         anteproyecto.descripcion || null,
-        anteproyecto.fechaLimite,
+        fechaLimite,
         anteproyecto.creadoPor,
         anteproyecto.status || 'activo'
     ];
@@ -48,6 +54,11 @@ async function deleteAnteproyecto(id) {
     return await dataSource.deleteData(query, [id]);
 }
 
+async function deleteSpecificAnteproyecto(title, fechaCreacion) {
+    const query = `DELETE FROM anteproyecto WHERE titulo = ? and fechaCreacion = ?;`;
+    return await dataSource.deleteData(query, [title, fechaCreacion]);
+}
+
 async function getAllAnteproyectos() {
     const query = `SELECT * FROM anteproyecto`;
     return await dataSource.getData(query);
@@ -59,10 +70,29 @@ async function getAnteproyectoById(id) {
     return resultado.length > 0 ? resultado[0] : null;
 }
 
+/**
+ * Gets an anteproyecto based on the user
+ * @param {userID} id anteproyecto creator 
+ * @returns all the user's anteproyectos
+ */
+async function getAnteproyectoByUser(userID) {
+    const query = `select 
+                        an.titulo as titulo,
+                        an.descripcion as descripcion,
+                        an.fechaCreacion as fechaInicial,
+                        an.fechaLimite as fechaLimite
+                    from anteproyecto an where an.creadoPor = ?
+                    order by an.ID_anteproyecto desc;`;
+    const param = [userID];
+    return await dataSource.getDataWithParams(query, param);
+}
+
 module.exports = {
     insertAnteproyecto,
     updateAnteproyecto,
     deleteAnteproyecto,
     getAllAnteproyectos,
-    getAnteproyectoById
+    getAnteproyectoById,
+    getAnteproyectoByUser,
+    deleteSpecificAnteproyecto
 };

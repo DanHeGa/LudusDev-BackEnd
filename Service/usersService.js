@@ -149,10 +149,10 @@ async function updateUserPassword(user){
         let query = `
             UPDATE usuario 
             SET contrasenaHashed = ?
-            WHERE username = ?
+            WHERE email = ?
         `;
         const hash = await hashService.encryptPassword(user.password);
-        let params = [hash, user.username]; // <-- Cambia aquí
+        let params = [hash, user.email]; // <-- Cambia aquí
         qResult = await dataSource.updateData(query,params);
         console.log("Filas afectadas:", qResult.affectedRows || qResult.rowCount || JSON.stringify(qResult));
     }catch(err){
