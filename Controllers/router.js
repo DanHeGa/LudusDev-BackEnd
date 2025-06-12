@@ -83,6 +83,7 @@ router.put(constants.contextURL + constants.apiURL + "/updateConvocatoria/:id", 
 router.get(constants.contextURL + constants.apiURL + "/getConvocatoriasByUser/:userId", userController.authenticateToken, convocatoria.getConvocatoriasByUser);
 
 router.post(constants.contextURL + constants.apiURL + "/imageUpload", imageRest.processUpload);
+
 // Anteproyectos, SECURED
 router.post(constants.contextURL + constants.apiURL + "/newAnteproyecto", userController.authenticateToken, anteproyectoController.insertAnteproyecto);
 router.put(constants.contextURL + constants.apiURL + "/updateAnteproyecto/:id", userController.authenticateToken, anteproyectoController.updateAnteproyecto);
