@@ -76,7 +76,8 @@ async function getAnteproyectoByUser(userID) {
                         an.descripcion as descripcion,
                         an.fechaCreacion as fechaInicial,
                         an.fechaLimite as fechaLimite
-                    from anteproyecto an where an.creadoPor = ?;`;
+                    from anteproyecto an where an.creadoPor = ?
+                    order by an.ID_anteproyecto desc;`;
     const param = [userID];
     return await dataSource.getDataWithParams(query, param);
 }
