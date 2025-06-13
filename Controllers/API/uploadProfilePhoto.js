@@ -18,10 +18,10 @@ const upload = multer({ storage });
 
 async function processUpload(req, res) {
   try {
-    const id_usuario = req.body.id_usuario;
+    const id_usuario = req.user.id; // El id del usuario autenticado (del token)
     const nombre = req.file.filename;
 
-    await profilePhotoService.saveProfilePhoto({ nombre });
+    await profilePhotoService.saveProfilePhoto({ nombre, usuario_carga: id_usuario });
     await profilePhotoService.updateUserProfilePhoto({ id_usuario, nombre });
 
     res.status(200).json({ status: 'success', filename: nombre });
