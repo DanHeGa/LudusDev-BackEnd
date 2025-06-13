@@ -26,11 +26,11 @@ async function index(req,res){
  * @param {Object} req Client Request
  * @param {Object} res Server Response
  */
-async function homePage(req,res){
+async function homePage(req,res){ 
     res.render('index',{title:'Index',header:'Bienvenido al API - Construcción de software'});
 }
 
 
-
+//template engine
 
 module.exports = {index,homePage};

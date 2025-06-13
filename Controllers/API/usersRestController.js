@@ -10,31 +10,12 @@
  */
 const userService = require('../../Service/usersService');
 const hashService = require('../../Service/hashPassword');
+const userProfileController = require('./userProfileController');
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
 const SECRET = process.env.SECRET;
 
-/**
- * HTTP Method that handles authentication
- */
-async function execLogin(req, res) {
-    const { username, password } = req.body;
-    const user = await hashService.isValidUser(username,password)
-  
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-  
-    //CREATES the token
-    const token = jwt.sign(
-      { id: user.id, username: user.username },
-      SECRET,
-      { expiresIn: '1h' }
-    );
-
-    res.json({ token }); // client stores this token
-}
 
 /**
  * Middleware that will execute before each protected URL
@@ -83,6 +64,44 @@ async function getUsers(req,res){
     }
 }
 
+async function updateUserPass(req,res){
+    try{       
+        let user = req.body;
+        const result = await userService.updateUserPassword(user);
+        res.status(200);
+        res.json({
+            "status"  : "success",
+            "total"   : result.changes
+        });
+    }catch(error){
+        let jsonError = {
+            "status"  : "error",
+            "message" : error.message
+        };
+        console.log(error);
+        res.status(500);
+        res.send(jsonError);
+    }
+}
+
+async function getUsersFromStatus(req, res){
+    try {
+        let userStatus = req.query.status;
+        const result = await userService.countUsers(userStatus);
+        const total = result.rows[0]?.total || 0;
+        res.status(200);
+        res.json({
+            "status"  : "success",
+            "total" : total
+        });
+    } catch(err) {
+        let jsonError = {
+            "status": "failed"
+        };
+        console.log(err);
+        res.status(500).send(jsonError);
+    }
+}
 
 /**
  * Method that returns a specific user based on its id.
@@ -118,26 +137,31 @@ async function findUser(req,res){
  * @param {Object} req the request object
  * @param {Object} res the response object
  */
-async function insertUser(req,res){
-    try{       
-        let user = req.body;
-        const result = await userService.insertUser(user);
-        res.status(200);
-        res.json({
-            "status"  : "success",
-            "total"   : result.changes,
-            "gen_id" : result.gen_id
-        });
-    }catch(error){
-        let jsonError = {
-            "status"  : "error",
-            "message" : error.message
-        };
-        console.log(error);
-        res.status(500);
-        res.send(jsonError);
+
+async function insertUser(req, res) {
+  try {
+    const { username, email, password, statusUsuario } = req.body;
+
+    if (!username || !email || !password || !statusUsuario) {
+      return res.status(400).json({ message: 'Missing required fields.' });
     }
+
+    const user = { username, email, password, statusUsuario };
+    const result = await userService.insertUser(user);
+
+    if (!result.status) {
+      // Aquí manejas el error que retorna el servicio (por ejemplo duplicado)
+      return res.status(409).json({ message: result.err });
+    }
+
+    res.status(201).json({ message: 'User created successfully.', userId: result.gen_id });
+
+  } catch (error) {
+    console.error('ERROR EN insertUser:', error);
+    res.status(500).json({ message: 'Error creando el usuario.' });
+  }
 }
+
 
 
 /**
@@ -192,6 +216,68 @@ async function deleteUser(req,res){
     }
 }
 
+/**
+ *  Endpoint de login usando email y password.
+ */
+async function loginWithEmail(req, res) {
+    const { email, password } = req.body;
+
+    const user = await userService.validateUserByEmail(email, password);
+
+    if (!user) {
+        return res.status(401).json({ isLogin: false, message: 'Correo o contraseña incorrectos' });
+    }
+
+    //create web token
+    const token = jwt.sign(
+        { id: user.id, userGmail: user.gmail},
+        SECRET,
+        {expiresIn: '1h'}
+    )
+
+    res.json({
+        isLogin: true,
+        user: {
+            id: user.ID_usuario,
+            email: user.email,
+            username: user.username
+        },
+        jwt: token //modified!!!!
+    });
+}
+
+/**
+ * Method that returns a specific user's role based on its email.
+ * 
+ * @param {Object} req the request object
+ * @param {Object} res the response object
+ */
+async function getUserRole(req, res) {
+    try {       
+        let email = req.query.email;
+        const result = await userService.getRoleByEmail(email);
+        res.status(200).json({
+            status: "success",
+            result: result.rows // <-- Así accedes a los datos
+        });
+    } catch(error) {
+        res.status(500).json({
+            status: "error",
+            message: error.message
+        });
+    }
+}
+
 module.exports = {
-    execLogin,authenticateToken,getUsers,findUser,insertUser,updateUser,deleteUser
+    //execLogin,
+    authenticateToken, //checks user token
+    getUsers,
+    findUser,
+    insertUser,
+    updateUser,
+    deleteUser, 
+    loginWithEmail, //creates token
+    updateUserPass,
+    getUsersFromStatus,
+    getUserRole
 }

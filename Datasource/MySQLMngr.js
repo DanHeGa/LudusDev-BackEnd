@@ -62,7 +62,8 @@ async function open(){
       port: PORT,//constants.dbPort,
       password: PASS,//constants.dbPass,
       database: DB,//constants.dbName,
-      decimalNumbers:true
+      decimalNumbers:true,
+      dateStrings: true //to handle dates as strings and not Date objects
     });
   
     return connection;
@@ -230,6 +231,37 @@ async function updateData(query,params){
   }
 }
 
+/**
+ * Método para ejecutar DELETE con parámetros.
+ * 
+ * @param {String} query Consulta DELETE
+ * @param {Array} params Parámetros para la consulta
+ * @returns {QueryResult}
+ */
+async function deleteData(query, params) {
+  try {
+    console.log("Delete Data");
+    const conn = await open();
+    return new Promise(function (resolve, reject) {
+      conn.connect((err) => {
+        if (err) {
+          reject(err.message);
+        } else {
+          conn.query(query, params, (error, data, fields) => {
+            conn.end();
+            if (error) {
+              reject(new QueryResult(false, null, 0, 0, error));
+            } else {
+              resolve(new QueryResult(true, data, 0, data.affectedRows, ""));
+            }
+          });
+        }
+      });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
-  module.exports = {QueryResult,getData,getDataWithParams,insertData,bulkInsertData,updateData}
+  module.exports = {QueryResult,getData,getDataWithParams,insertData,bulkInsertData,updateData, deleteData}
