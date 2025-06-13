@@ -44,8 +44,6 @@ const profilePhotoController = require('./API/profilePhotoController');
 
 // Documento Convocatoria
 const documentoConvocatoriaController = require('../Controllers/API/documentoConvocatoriaController');
-
-//Documento anteproyecto
 const docAnteproyectoController = require('../Controllers/API/documentoAnteproyectoController');
 
 const router = express.Router();
@@ -100,15 +98,26 @@ router.post(constants.contextURL + constants.apiURL + "/soporte",soporteControll
 //cambio de contraseña -> Dani
 router.post(constants.contextURL + constants.apiURL + "/cambioContra", userController.updateUserPass);
 
-// Subir Docuemtno Convocatoria
+// Subir Documento Convocatoria
 router.post(
   constants.contextURL + constants.apiURL + "/uploadDocumentoConvocatoria/:id_convocatoria",
   upload.single('file'), documentoConvocatoriaController.insertDocumentoConvocatoria
 );
 
 router.get(
-   constants.contextURL + constants.apiURL + "documentosConvocatoria/:id_convocatoria",
+  constants.contextURL + constants.apiURL + "documentosConvocatoria/:id_convocatoria",
   documentoConvocatoriaController.getDocumentosPorConvocatoria
+);
+
+// Descargar documento de convocatoria
+router.get(
+  constants.contextURL + constants.apiURL + "/descargarDocumentoConvocatoria/:id_documento",
+  documentoConvocatoriaController.descargarDocumento
+);
+
+router.get(
+    constants.contextURL + constants.apiURL + "/documentosConvocatoria/:id_convocatoria",
+    documentoConvocatoriaController.getDocumentosPorConvocatoria
 );
 
 // Subir Documento Anteproyecto

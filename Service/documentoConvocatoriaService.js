@@ -43,7 +43,18 @@ async function getDocumentosPorConvocatoria(idConvocatoria) {
     return await dataSource.getDataWithParams(query, [idConvocatoria]);
 }
 
+/**
+ * Obtiene un documento por su ID.
+ * @param {number} idDocumento
+ * @returns {Promise<Object>}
+ */
+async function getDocumentoPorId(idDocumento) {
+    const query = `SELECT * FROM documento_convocatoria WHERE ID_documentoConvocatoria = ?`;
+    return await dataSource.getDataWithParams(query, [idDocumento]);
+}
+
 module.exports = {
     insertDocumentoConvocatoria,
     getDocumentosPorConvocatoria,
+    getDocumentoPorId
 };
