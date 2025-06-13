@@ -39,6 +39,7 @@ const documentRestController = require('./API/documentRestController');
 
 // Upload Middleware
 const upload = require('../Middleware/uploadMiddleware');
+const profilePhotoUpload = require('../Middleware/profilePhotoUpload');
 const uploadProfilePhoto = require('./API/uploadProfilePhoto');
 const profilePhotoController = require('./API/profilePhotoController');
 
@@ -129,10 +130,25 @@ router.post(
 // Subir Foto de Perfil
 router.post(
   constants.contextURL + constants.apiURL + "/uploadProfilePhoto",
+  userController.authenticateToken, 
   uploadProfilePhoto.upload.single("image"),
   uploadProfilePhoto.processUpload
 );
 router.get('/CSoftware/api/profile-photo/:filename', profilePhotoController.getProfilePhoto);
 
+
+// Ruta para subir/cambiar foto de perfil
+router.post(
+  constants.contextURL + constants.apiURL + '/upload-profile-photo',
+  authenticateToken,
+  profilePhotoUpload.single('foto'),
+  uploadProfilePhoto.processUpload
+);
+
+// Ruta para servir la foto de perfil
+router.get(
+  constants.contextURL + constants.apiURL + '/profile-photo/:filename',
+  profilePhotoController.getProfilePhoto
+);
 
 module.exports = router;

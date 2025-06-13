@@ -1,9 +1,9 @@
 const dataSource = require('../Datasource/MySQLMngr');
 
-async function saveProfilePhoto({ nombre }) {
+async function saveProfilePhoto({ nombre, usuario_carga }) {
     // Guarda en la tabla imagenes
-    const query = `INSERT INTO imagenes (nombre) VALUES (?)`;
-    return await dataSource.insertData(query, [nombre]);
+    const query = `INSERT INTO imagenes (nombre, usuario_carga) VALUES (?, ?)`;
+    return await dataSource.insertData(query, [nombre, usuario_carga]);
 }
 
 async function updateUserProfilePhoto({ id_usuario, nombre }) {
