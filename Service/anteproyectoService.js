@@ -8,7 +8,7 @@ const dataSource = require('../Datasource/MySQLMngr');
 async function insertAnteproyecto(anteproyecto) {
     // Formatea la fecha a 'YYYY-MM-DD' si existe
     let fechaLimite = anteproyecto.fechaLimite;
-    if (fechaLimite) {
+    if (fechaLimite instanceof Date) {
         fechaLimite = fechaLimite.toISOString().split('T')[0];
     }
     
