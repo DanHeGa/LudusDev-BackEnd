@@ -140,7 +140,7 @@ router.get('/CSoftware/api/profile-photo/:filename', profilePhotoController.getP
 // Ruta para subir/cambiar foto de perfil
 router.post(
   constants.contextURL + constants.apiURL + '/upload-profile-photo',
-  authenticateToken,
+  userController.authenticateToken,
   profilePhotoUpload.single('foto'),
   uploadProfilePhoto.processUpload
 );
