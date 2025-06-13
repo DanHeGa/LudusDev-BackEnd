@@ -23,7 +23,7 @@ const mysql = require('mysql2')
 require('dotenv').config()
 
 const HOST = process.env.HOST;
-const PORT = process.env.PORT;
+const PORT = process.env.DB_PORT;
 const USR = process.env.USR;
 const PASS = process.env.PASS;
 const DB = process.env.DB;
